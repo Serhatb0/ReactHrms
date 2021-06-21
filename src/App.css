@@ -1,0 +1,14 @@
+/* .App {
+  text-align: center;
+} */
+
+
+.homeMenu:hover:hover{
+  transform: scale(1.1);
+}
+
+.homeMenu{
+  background-color: black;
+}
+
+
