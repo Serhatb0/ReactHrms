@@ -2,7 +2,8 @@ import React from "react";
 import ResumeLanguagePage from "./ResumeLanguagePage";
 import ResumeEducationPage from "./ResumeEducationPage";
 import ResumeWorkExperiencePage from "./ResumeWorkExperiencePage";
-import Profil from "./Profil";
+import ProfilPage from "./ProfilPage";
+import SettingsPage from "./SettingsPage";
 import "./Css/Resume.css";
 import { Icon } from "semantic-ui-react";
 
@@ -11,9 +12,9 @@ export default function Resume() {
     <div>
       <div class="container" style={{ marginTop: "2.2em" }}>
         <div class="row gutters">
-          <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" >
+          <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
             <div class="card card-resume h-100">
-              <div class="card-bod" >
+              <div class="card-bod">
                 <div class="account-settings">
                   <div class="user-profile">
                     <div class="user-avatar">
@@ -113,37 +114,46 @@ export default function Resume() {
             </div>
           </div>
           <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-            <div class="card  h-100" style={{padding:"0em 0em 0em 0em"}}>
-              <div class="card-body" style={{padding:"0em 0em 0em 0em"}}>
+            <div class="card  h-100" style={{ padding: "0em 0em 0em 0em" }}>
+              <div class="card-body" style={{ padding: "0em 0em 0em 0em" }}>
                 <div class="row gutters">
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"></div>
                   <div class="tab-content col-12" id="nav-tabContent">
-                  <div
-                    class="tab-pane fade show active "
-                    id="list-resume"
-                    role="tabpanel"
-                    aria-labelledby="list-resume-list"
-                  >
-                    <div class="col-12 ">
-                      <h6 class="mb-2 text-primary">Öz Geçmişini Duzenle</h6>
-                      <ResumeEducationPage></ResumeEducationPage>
+                    <div
+                      class="tab-pane fade show active "
+                      id="list-resume"
+                      role="tabpanel"
+                      aria-labelledby="list-resume-list"
+                    >
+                      <div class="col-12 ">
+                        <h6 class="mb-2 text-primary">Öz Geçmişini Duzenle</h6>
+                        <ResumeEducationPage></ResumeEducationPage>
+                      </div>
+                      <div class="col-12">
+                        <ResumeLanguagePage></ResumeLanguagePage>
+                      </div>
+                      <div class="col-12">
+                        <ResumeWorkExperiencePage></ResumeWorkExperiencePage>
+                      </div>
                     </div>
-                    <div class="col-12">
-                      <ResumeLanguagePage></ResumeLanguagePage>
+                    <div
+                      class="tab-pane fade col-12"
+                      id="list-profil"
+                      role="tabpanel"
+                      aria-labelledby="list-profil-list"
+                    >
+                      {" "}
+                      <ProfilPage></ProfilPage>{" "}
                     </div>
-                    <div class="col-12">
-                      <ResumeWorkExperiencePage></ResumeWorkExperiencePage>
+                    <div
+                      class="tab-pane fade col-12"
+                      id="list-settings"
+                      role="tabpanel"
+                      aria-labelledby="list-settings-list"
+                    >
+                      {" "}
+                      <SettingsPage ></SettingsPage>
                     </div>
-                  </div>
-                  <div
-                    class="tab-pane fade col-12"
-                    id="list-profil"
-                    role="tabpanel"
-                    aria-labelledby="list-profil-list"
-                  >
-                    {" "}
-                    <Profil></Profil>{" "}
-                  </div>
                   </div>
                 </div>
               </div>

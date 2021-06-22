@@ -1,6 +1,6 @@
 import React from "react";
 import "./Css/Profil.css";
-export default function Profil() {
+export default function ProfilPage() {
   return (
     <div>
       <div className="container-fluid">
