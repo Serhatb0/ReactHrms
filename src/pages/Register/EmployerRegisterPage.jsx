@@ -1,145 +1,111 @@
-import React, { useState, useEffect } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import RegisterEmployerService from "../../services/registerEmployerService";
+import "./css/EmployerRegister.css";
+import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
+import { Button } from "semantic-ui-react";
 
 export default function EmployerRegisterPage() {
+  let registerEmployerSerivce = new RegisterEmployerService();
 
-    let registerEmployerSerivce = new RegisterEmployerService();
-    
- 
+  const initialValues = {
+    companyName: "",
+    webAddress: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const schema = Yup.object({
+    companyName: Yup.string().required("Zorunlu Alan"),
+    webAddress: Yup.string().required("Web Adres Zorunlu"),
+    email: Yup.string().email("Email Formatı Değil").required("Zorunlu Alan"),
+    password: Yup.string()
+      .min(6, "Şifre En Az 6 Krakter Olmalı")
+      .required("Zorunlu Alan"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Şifre Aynı Değil")
+      .required("Zorunlu Alan"),
+  });
+
   return (
-    <div>
-      {" "}
-      <Formik
-        initialValues={{
-          companyName: "",
-          webAddress: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        }}
-        validationSchema={Yup.object().shape({
-          companyName: Yup.string().required("Zorunlu Alan"),
-          webAddress: Yup.string().required("Web Adres Zorunlu"),
-          email: Yup.string()
-            .email("Email Formatı Değil")
-            .required("Zorunlu Alan"),
-          password: Yup.string()
-            .min(6, "Şifre En Az 6 Krakter Olmalı")
-            .required("Zorunlu Alan"),
-          confirmPassword: Yup.string()
-            .oneOf([Yup.ref("password"), null], "Şifre Aynı Değil")
-            .required("Zorunlu Alan"),
-        })}
-        onSubmit={(fields) => {
-          registerEmployerSerivce.postRegisterEmployer(fields);
-          
+    <Formik
+      initialValues={initialValues}
+      validationSchema={schema}
+      onSubmit={(values) => {
+        // registerEmployerSerivce.postRegisterEmployer(fields);
 
-        }}
-      >
-        {({ errors, status, touched }) => (
-          <Form style={{ marginTop: "6em" }}>
-            <div className="container">
-              <div className="form-row justify-content-center align-items-center">
-                <div className="form-group col-4 ">
-                  <Field
+        console.log(values);
+        console.log("serhat");
+      }}
+    >
+      <Form style={{ marginTop: "6em" }}>
+        <div className="signup-form">
+      
+          <form >
+            <h2>Kayıt Ol</h2>
+            <p className="hint-text">
+              Create your account. It's free and only takes a minute.
+            </p>
+            <div className="form-group">
+              <div className="row">
+                <div className="col">
+                  <BiricikTextInput
+                    className="form-control"
                     name="companyName"
                     placeholder="Şirket Adı"
-                    as="input"
-                    className={
-                      "form-control " +
-                      (errors.companyName && touched.companyName
-                        ? " is-invalid"
-                        : "")
-                    }
-                  ></Field>
-                  <ErrorMessage
-                    name="companyName"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                  <Field
-                    style={{ marginTop: "1em" }}
+                  ></BiricikTextInput>
+                </div>
+                <div className="col">
+                  <BiricikTextInput
+                   className="form-control"
                     name="webAddress"
-                    placeholder="webAddress"
-                    as="input"
-                    className={
-                      "form-control " +
-                      (errors.webAddress && touched.webAddress
-                        ? " is-invalid"
-                        : "")
-                    }
-                  ></Field>
-                  <ErrorMessage
-                    name="webAddress"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                  <Field
-                    style={{ marginTop: "1em" }}
-                    name="email"
-                    placeholder="Email"
-                    as="input"
-                    type="email"
-                    className={
-                      "form-control " +
-                      (errors.email && touched.email ? " is-invalid" : "")
-                    }
-                  ></Field>
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                  <Field
-                    style={{ marginTop: "1em" }}
-                    name="password"
-                    placeholder="Şifre"
-                    as="input"
-                    type="password"
-                    className={
-                      "form-control " +
-                      (errors.password && touched.password ? " is-invalid" : "")
-                    }
-                  ></Field>
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                  <Field
-                    style={{ marginTop: "1em" }}
-                    name="confirmPassword"
-                    placeholder="Şifre Tekrarı"
-                    as="input"
-                    type="password"
-                    className={
-                      "form-control " +
-                      (errors.confirmPassword && touched.confirmPassword
-                        ? " is-invalid"
-                        : "")
-                    }
-                  ></Field>
-                  <ErrorMessage
-                    name="confirmPassword"
-                    component="div"
-                    className="invalid-feedback"
-                  />
+                    placeholder="Web Addresi"
+                  ></BiricikTextInput>
                 </div>
               </div>
             </div>
-            <div className="form-group" style={{margin:"0em 0em 0em 37em"}}>
-              <button type="submit" class="btn btn-outline-success btn-lg">
-                Kayıt Ol
-              </button>
-              <button type="reset" class="btn btn-outline-danger btn-lg" style={{marginLeft:"2em"}} >
-                Temizle
-              </button>
+            <div className="form-group">
+              <input
+                type="email"
+                className="form-control"
+                name="email"
+                placeholder="Email"
+              />
             </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
+            <div className="form-group">
+              <input
+                type="password"
+                className="form-control"
+                name="password"
+                placeholder="Password"
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                className="form-control"
+                name="confirm_password"
+                placeholder="Confirm Password"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-check-label">
+                <input type="checkbox" /> I accept the <a>Terms of Use</a> &amp;{" "}
+                <a>Privacy Policy</a>
+              </label>
+            </div>
+          </form>
+       
+          <Button type="submit" color="teal" fluid size="large">
+            Kayıt Ol
+          </Button>
+
+          <div className="text-center">
+            Already have an account? <a>Sign in</a>
+          </div>
+        </div>
+      </Form>
+    </Formik>
   );
 }
