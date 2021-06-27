@@ -17,7 +17,7 @@ export default function SignedIn({signOut}) {
               Ana Sayfa
             </Menu.Item>
             <Menu.Item as="a">Work</Menu.Item>
-            <Menu.Item as="a">Company</Menu.Item>
+            <Menu.Item as={NavLink} to="/resumeView">Özgeçmişini Görüntüle</Menu.Item>
             <Menu.Item as={NavLink} to="/resume">
               Özgeçmiş
             </Menu.Item>

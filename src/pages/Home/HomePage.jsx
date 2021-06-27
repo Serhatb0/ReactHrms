@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import "../../App.css";
 import "../Home/Css/HomePage.css";
@@ -68,51 +70,51 @@ export default function HomePage() {
           </Grid.Row>
         </Grid>
       </Segment>
-      <section class="section">
-    <div class="container">
-        <div class="row md-m-25px-b m-45px-b justify-content-center text-center">
-            <div class="col-lg-8">
+      <section className="section">
+    <div className="container">
+        <div className="row md-m-25px-b m-45px-b justify-content-center text-center">
+            <div className="col-lg-8">
                <h2 className="display-5 text-danger">En Son Eklenen İş İlanları</h2>
 
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-6 col-lg-4 m-15px-tb">
-                <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px" style={{background:"white"}}>
-                    <a class="overlay-link" ></a>
-                    <div class="bg-warning icon-50 theme-bg white-color border-radius-50 d-inline-block">
-                        <i class="number">LD</i>
+        <div className="row">
+            <div className="col-sm-6 col-lg-4 m-15px-tb">
+                <div className="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px" style={{background:"white"}}>
+                    <a className="overlay-link" ></a>
+                    <div className="bg-warning icon-50 theme-bg white-color border-radius-50 d-inline-block">
+                        <i className="number">LD</i>
                     </div>
-                    <div class="p-20px-l media-body">
-                        <span class=" bg-info theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
-                        <h6 class="m-5px-tb">Laravel Developer</h6>
-                        <p class="m-0px font-small">San Francisco, US</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 m-15px-tb">
-                <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px" style={{background:"white"}}>
-                    <a class="overlay-link" ></a>
-                    <div class="icon-50 green-bg white-color border-radius-50 d-inline-block">
-                        <i class="number">LD</i>
-                    </div>
-                    <div class="p-20px-l media-body">
-                        <span class="theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
-                        <h6 class="m-5px-tb">Laravel Developer</h6>
-                        <p class="m-0px font-small">San Francisco, US</p>
+                    <div className="p-20px-l media-body">
+                        <span className=" bg-info theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
+                        <h6 className="m-5px-tb">Laravel Developer</h6>
+                        <p className="m-0px font-small">San Francisco, US</p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-lg-4 m-15px-tb">
-                <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px"style={{background:"white"}}>
-                    <a class="overlay-link" ></a>
-                    <div class="icon-50 yellow-bg white-color border-radius-50 d-inline-block">
-                        <i class="number">LD</i>
+            <div className="col-sm-6 col-lg-4 m-15px-tb">
+                <div className="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px" style={{background:"white"}}>
+                    <a className="overlay-link" ></a>
+                    <div className="icon-50 green-bg white-color border-radius-50 d-inline-block">
+                        <i className="number">LD</i>
                     </div>
-                    <div class="p-20px-l media-body">
-                        <span class="theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
-                        <h6 class="m-5px-tb">Laravel Developer</h6>
-                        <p class="m-0px font-small">San Francisco, US</p>
+                    <div className="p-20px-l media-body">
+                        <span className="theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
+                        <h6 className="m-5px-tb">Laravel Developer</h6>
+                        <p className="m-0px font-small">San Francisco, US</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-sm-6 col-lg-4 m-15px-tb">
+                <div className="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px"style={{background:"white"}}>
+                    <a className="overlay-link" ></a>
+                    <div className="icon-50 yellow-bg white-color border-radius-50 d-inline-block">
+                        <i className="number">LD</i>
+                    </div>
+                    <div className="p-20px-l media-body">
+                        <span className="theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
+                        <h6 className="m-5px-tb">Laravel Developer</h6>
+                        <p className="m-0px font-small">San Francisco, US</p>
                     </div>
                 </div>
             </div>

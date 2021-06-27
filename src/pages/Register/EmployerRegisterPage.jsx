@@ -26,6 +26,10 @@ export default function EmployerRegisterPage() {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Şifre Aynı Değil")
       .required("Zorunlu Alan"),
+    privacyPolicy: Yup.bool().oneOf(
+      [true],
+      "Şartları ve Koşulları kabul etmen gerekli"
+    ),
   });
 
   return (
@@ -41,11 +45,10 @@ export default function EmployerRegisterPage() {
     >
       <Form style={{ marginTop: "6em" }}>
         <div className="signup-form">
-      
-          <form >
+          <form>
             <h2>Kayıt Ol</h2>
             <p className="hint-text">
-              Create your account. It's free and only takes a minute.
+              Peşinden Gidecek Cesaretin Varsa Bütün Hayaller Gerçek Olabilir
             </p>
             <div className="form-group">
               <div className="row">
@@ -54,55 +57,58 @@ export default function EmployerRegisterPage() {
                     className="form-control"
                     name="companyName"
                     placeholder="Şirket Adı"
+                    type="text"
                   ></BiricikTextInput>
                 </div>
                 <div className="col">
                   <BiricikTextInput
-                   className="form-control"
+                    className="form-control"
                     name="webAddress"
                     placeholder="Web Addresi"
+                    type="text"
                   ></BiricikTextInput>
                 </div>
               </div>
             </div>
             <div className="form-group">
-              <input
-                type="email"
+              <BiricikTextInput
                 className="form-control"
                 name="email"
                 placeholder="Email"
-              />
+                type="email"
+              ></BiricikTextInput>
             </div>
             <div className="form-group">
-              <input
-                type="password"
+              <BiricikTextInput
                 className="form-control"
                 name="password"
-                placeholder="Password"
-              />
+                placeholder="Şifre"
+                type="password"
+              ></BiricikTextInput>
             </div>
             <div className="form-group">
-              <input
-                type="password"
+              <BiricikTextInput
                 className="form-control"
-                name="confirm_password"
-                placeholder="Confirm Password"
-              />
+                name="confirmPassword"
+                placeholder="Şifre Tekrarı"
+                type="password"
+              ></BiricikTextInput>
             </div>
             <div className="form-group">
               <label className="form-check-label">
-                <input type="checkbox" /> I accept the <a>Terms of Use</a> &amp;{" "}
-                <a>Privacy Policy</a>
+                <input name="privacyPolicy" type="checkbox" /> kabul ediyorum{" "}
+                <a>Kullanım Şartları</a> &amp; <a>Gizlilik Politikası</a>
               </label>
             </div>
+           
           </form>
-       
           <Button type="submit" color="teal" fluid size="large">
             Kayıt Ol
           </Button>
+         
 
           <div className="text-center">
-            Already have an account? <a>Sign in</a>
+            Zaten hesabınız var mı? <a>Oturum aç</a>
           </div>
         </div>
       </Form>

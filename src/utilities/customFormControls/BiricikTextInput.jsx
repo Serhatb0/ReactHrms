@@ -8,7 +8,6 @@ export default function BiricikTextInput({ ...props }) {
   return (
     <section  error={meta.touched &&  !!meta.error}>
       <input
-       type="text"
       {...field} {...props} />
       {meta.touched &&  !!meta.error? (
             <Label pointing basic color="red" content={meta.error}></Label>
