@@ -17,7 +17,7 @@ document.body.style.backgroundColor="#dddddd"
   return (
     <div>
       
-      {/* <Navi></Navi>
+      <Navi></Navi>
       <Route exact path="/" component={HomePage}/>
       <Route exact path="/anasayfa" component={HomePage}/>
       <Route exact path="/resume" component={Resume}/>
@@ -31,11 +31,11 @@ document.body.style.backgroundColor="#dddddd"
     
   
      
-      <Footer></Footer> */}
+      <Footer></Footer>
 
 
 
-       <EmployeeDashboard></EmployeeDashboard>  
+       {/* <EmployeeDashboard></EmployeeDashboard>   */}
     </div>
   );
 }
