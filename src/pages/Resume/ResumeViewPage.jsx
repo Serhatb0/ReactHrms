@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import "./Css/ResumeViewPage.css";
-import education from "../../img/education/indir (1)_770x400.jpg"
-import education1 from "../../img/education/student-education-750x460-1_770x400.jpg"
-import education2 from "../../img/education/images_770x400.jpg"
+import education from "../../img/education/indir (1)_770x400.jpg";
+import education1 from "../../img/education/student-education-750x460-1_770x400.jpg";
+import education2 from "../../img/education/images_770x400.jpg";
 export default function ResumeViewPage() {
   return (
     <div>
@@ -64,28 +65,111 @@ export default function ResumeViewPage() {
           <div className="card">
             <div className="row ">
               <div className="col-md-7 px-3">
+                <h4 className="card-title">Eğitim Bilgileri</h4>
                 <div className="card-block px-6">
-                  <h4 className="card-title">
-                    Eğitim Bilgileri
-                  </h4>
                   <div className="row">
-                    <div className="col-5">
-                    <div className="card">
-                   <div className="card-body"></div>
+                    <div className="col-10">
+                      <div className="card  p-3 m-0">
+                        <div className="card-body p-0 m-0">
+                          <div style={{ float: "left" }}>
+                           
+                              <i
+                                className="bi bi-bank2 fa-3x "
+                                style={{ float: "left" }}
+                              ></i>
+                        
+                            <p style={{ margin: "0em 0em 0em 4em" }}>
+                              <b>Mardin Artuklu</b>
+                            </p>
+
+                            <p style={{ margin: "0em 0em 0em 4em" }}>
+                              2019-2021
+                            </p>
+                            <p
+                              style={{ marginLeft: "4em" }}
+                              className="card-text"
+                            >
+                              Bilgisiyar Programcılığı
+                            </p>
+                          </div>
+                          <di className="edit-remove">
+                          <a
+                              href="#EmployeeRejectModal"
+                              className="delete"
+                              data-toggle="modal"
+                              
+                            >
+                            <i
+                              className="bi bi-pencil fa-2x  "
+                              style={{
+                                margin: "0em 0em 0em 7.3em",
+                                width: "40px",
+                                height: "40px",
+                              }}
+                            ></i>
+                                </a>
+                            <i
+                              className="bi bi-eraser fa-2x "
+                              style={{
+                                margin: "0em 0em 0em 7.3em",
+                                width: "40px",
+                                height: "40px",
+                              }}
+                            ></i>
+                          </di>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-10" style={{ marginTop: "2em" }}>
+                      <div className="card  p-3 m-0">
+                        <div className="card-body p-0 m-0">
+                          <div style={{ float: "left" }}>
+                            <i
+                              className="bi bi-bank2 fa-3x "
+                              style={{ float: "left" }}
+                            ></i>
+
+                            <p style={{ margin: "0em 0em 0em 4em" }}>
+                              <b>Mardin Artuklu</b>
+                            </p>
+
+                            <p style={{ margin: "0em 0em 0em 4em" }}>
+                              2019-2021
+                            </p>
+                            <p
+                              style={{ marginLeft: "4em" }}
+                              className="card-text"
+                            >
+                              Bilgisiyar Programcılığı
+                            </p>
+                          </div>
+                          <div>
+                            <i
+                              className="bi bi-pencil fa-2x "
+                              style={{
+                                margin: "0em 0em 0em 7.3em",
+                                width: "40px",
+                                height: "40px",
+                              }}
+                            ></i>
+                            <i
+                              className="bi bi-eraser fa-2x "
+                              style={{
+                                margin: "0em 0em 0em 7.3em",
+                                width: "40px",
+                                height: "40px",
+                              }}
+                            ></i>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-              
-                 </div>
-                  <p className="card-text">
-                    Made for usage, commonly searched for. Fork, like and use
-                    it. Just move the carousel div above the col containing the
-                    text for left alignment of images
-                  </p>
+
                   <br />
-                  <a href="#" className="mt-auto btn btn-primary  ">
-                    Read More
-                  </a>
-                  
+                  <button type="button" class="btn btn-outline-success">
+                    Yeni Eğitim Bilgisi
+                  </button>
                 </div>
               </div>
               {/* Carousel start */}
@@ -104,27 +188,15 @@ export default function ResumeViewPage() {
                     <li data-target="#CarouselTest" data-slide-to={1} />
                     <li data-target="#CarouselTest" data-slide-to={2} />
                   </ol>
-                  <div className="carousel-inner">
+                  <div className="carousel-inner mt-5">
                     <div className="carousel-item active">
-                      <img
-                        className="d-block"
-                        src={education}
-                        alt
-                      />
+                      <img className="d-block" src={education} alt />
                     </div>
                     <div className="carousel-item">
-                      <img
-                        className="d-block"
-                        src={education1}
-                        alt
-                      />
+                      <img className="d-block" src={education1} alt />
                     </div>
                     <div className="carousel-item">
-                      <img
-                        className="d-block"
-                        src={education2}
-                        alt
-                      />
+                      <img className="d-block" src={education2} alt />
                     </div>
                     <a
                       className="carousel-control-prev"
@@ -160,7 +232,49 @@ export default function ResumeViewPage() {
         <br />
         <br />
       </section>
-      
+
+      {/* Modal */}
+
+      <div id="EmployeeRejectModal" className="modal fade">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <form>
+              <div className="modal-header">
+                <h4 className="modal-title">Biricik A.ş</h4>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>Neden İş İlanını Reddettiniz?</p>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div className="modal-footer">
+                <input
+                  type="button"
+                  className="btn btn-danger"
+                  data-dismiss="modal"
+                  defaultValue="Cancel"
+                />
+                <input
+                  type="submit"
+                  className="btn btn-success"
+                  defaultValue="Delete"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
