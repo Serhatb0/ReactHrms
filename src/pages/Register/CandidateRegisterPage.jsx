@@ -10,7 +10,7 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
-import { useFormik, ErrorMessage, Field, Formik } from "formik";
+import { useFormik} from "formik";
 export default function CandidateRegisterPage() {
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Zorun Alan"),
