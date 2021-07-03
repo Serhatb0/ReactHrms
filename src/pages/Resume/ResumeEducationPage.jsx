@@ -2,7 +2,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import "./Css/Resume.css";
+
 import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
 
 import education from "../../img/education/indir (1)_770x400.jpg";

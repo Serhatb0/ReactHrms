@@ -13,7 +13,7 @@ import {
   Button,
   Icon,
 } from "semantic-ui-react";
-import "../pages/Resume/Css/Resume.css"
+
 export default function Footer() {
   return (
     <div>

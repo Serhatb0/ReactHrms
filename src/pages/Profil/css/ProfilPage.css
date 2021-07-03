@@ -34,3 +34,21 @@
 	flex: 1;
   
 }
+
+
+
+.image-upload-profil > input
+{
+    display: none;
+}
+
+.image-upload-profil img:hover
+{
+    background-color: darkblue;
+}
+
+.image-upload-profil img
+{
+    width: 100px;
+    cursor: pointer;
+}

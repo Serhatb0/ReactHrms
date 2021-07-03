@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 
-import { Button, Container, Icon, Menu, Segment,Image,Dropdown } from "semantic-ui-react";
+import { Button, Container, Icon, Menu, Segment,Divider,} from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
+
 export default function SignedIn({signOut}) {
     return (
         <div>
@@ -18,8 +20,8 @@ export default function SignedIn({signOut}) {
             </Menu.Item>
             <Menu.Item as="a">Work</Menu.Item>
             <Menu.Item as={NavLink} to="/resumeView">Özgeçmişini Görüntüle</Menu.Item>
-            <Menu.Item as={NavLink} to="/resume">
-              Özgeçmiş
+            <Menu.Item as={NavLink} to="/profil">
+              Profilim
             </Menu.Item>
             <Menu.Item position="right">
               <Button inverted color="red" style={{ marginLeft: "0.5em" }}>
@@ -56,11 +58,13 @@ export default function SignedIn({signOut}) {
                     <i class="material-icons md-light ml-2 pmd-sm"></i>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    <a class="dropdown-item" href>
-                      Profilim
+               
+                    <a  class="dropdown-item" >
+                   Profilim
                     </a>
+                
                     <a  onClick={signOut} class="dropdown-item" href>
-                      Çıkış Yap
+                     <Divider> Çıkış Yap</Divider>
                     </a>
                   </ul>
                 </div>

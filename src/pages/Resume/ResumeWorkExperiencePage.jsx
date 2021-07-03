@@ -1,5 +1,5 @@
 import React from "react";
-import "./Css/Resume.css";
+
 export default function ResumeWorkExperiencePage() {
   return (
     <div id="work">

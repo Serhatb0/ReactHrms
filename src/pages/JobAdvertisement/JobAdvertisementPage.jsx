@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./Css/JobAdvertisementPage.css";
-import { Grid } from "semantic-ui-react";
+import { Grid, Pagination } from "semantic-ui-react";
 import JobAdvertisementService from "../../services/jobAdvertisementService";
 import JobAdvertisementSideBarPage from "./JobAdvertisementSideBarPage";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 export default function JobAdvertisementPage() {
+  const [activePage, setActivePage] = useState(1);
+  const [pageSize] = useState(10);
+  const [totalPageSize, settotalPageSize] = useState(0);
 
-  
   const [jobAdvertisements, setjobAdvertisements] = useState([]);
 
   useEffect(() => {
-    let jobAdvertisements = new JobAdvertisementService();
-    jobAdvertisements
-      .getJobAdvertisements()
-      .then((result) => setjobAdvertisements(result.data.data));
-  });
+    let jobAdvertisementService = new JobAdvertisementService();
+    jobAdvertisementService.getJobAdvertisements().then((result) => {
+      settotalPageSize(parseInt(result.data.data.length));
+    });
+    jobAdvertisementService
+      .getAllByPage(activePage, pageSize)
+      .then((result) => {
+        setjobAdvertisements(result.data.data);
+      });
+  }, [activePage, pageSize]);
+
+  
+  const handleSelectedPage = (e, { activePage }) => {
+    setActivePage(activePage);
+  };
   const options = [
     { value: "A", text: "As" },
     { value: "B", text: "B" },
@@ -30,7 +42,7 @@ export default function JobAdvertisementPage() {
             <JobAdvertisementSideBarPage></JobAdvertisementSideBarPage>
           </Grid.Column>
           <Grid.Column width={12}>
-            <div class="container" style={{ marginTop: "2.2em" }}>
+            <div class="container" style={{ marginTop: "4.5em" }}>
               <div class="row">
                 <div class="col-12">
                   <div class="card card-margin">
@@ -42,7 +54,7 @@ export default function JobAdvertisementPage() {
                               <div class="row">
                                 <div class="col-lg-6">
                                   <div class="records">
-                                    Gosterilen: <b>1-20</b> of <b>200</b> Sonuç
+                                    Gosterilen: <b>1-{pageSize}</b> of <b>{totalPageSize}</b> Sonuç
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -177,12 +189,14 @@ export default function JobAdvertisementPage() {
                                         <td>
                                           <div class="widget-26-job-title">
                                             <a href>
-                                              <Link to={`/jobadvertisement/${job.jobPostingsId}`}>{job.employer.companyName}</Link>
+                                              <Link
+                                                to={`/jobadvertisement/${job.jobPostingsId}`}
+                                              >
+                                                {job.employer.companyName}
+                                              </Link>
                                             </a>
                                             <p class="m-0">
-                                              <a href class="employer-name">
-                                                
-                                              </a>{" "}
+                                              <a href class="employer-name"></a>{" "}
                                               <span class="text-muted time">
                                                 5 Gün Once Eklendi
                                               </span>
@@ -218,21 +232,10 @@ export default function JobAdvertisementPage() {
                                         </td>
                                         <td>
                                           <div class="widget-26-job-starred">
-                                            <a href>
-                                              <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="feather feather-star"
-                                              >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                              </svg>
+                                            <a className="icon-bookmarks">
+                                             
+                                           
+                                              <i className="bi bi-bookmarks"></i>
                                             </a>
                                           </div>
                                         </td>
@@ -245,42 +248,13 @@ export default function JobAdvertisementPage() {
                           </div>
                         </div>
                       </div>
-                      <nav class="d-flex justify-content-center">
-                        <ul class="pagination pagination-base pagination-boxed pagination-square mb-0">
-                          <li class="page-item">
-                            <a class="page-link no-border" href>
-                              <span aria-hidden="true">«</span>
-                              <span class="sr-only">Previous</span>
-                            </a>
-                          </li>
-                          <li class="page-item active">
-                            <a class="page-link no-border" href>
-                              1
-                            </a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link no-border" href>
-                              2
-                            </a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link no-border" href>
-                              3
-                            </a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link no-border" href>
-                              4
-                            </a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link no-border" href>
-                              <span aria-hidden="true">»</span>
-                              <span class="sr-only">Next</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
+                      <Pagination
+                        firstItem={null}
+                        lastItem={null}
+                        activePage={activePage}
+                        onPageChange={handleSelectedPage}
+                        totalPages={Math.ceil(totalPageSize / pageSize)}
+                      />
                     </div>
                   </div>
                 </div>

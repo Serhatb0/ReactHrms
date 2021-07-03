@@ -323,6 +323,7 @@ export default function ResumeLanguagePage() {
                       class="form-select"
                       aria-label="Default select example"
                       name="languageLevel"
+                      
                     >
                       <option selected>Seviye*</option>
                       <option value="1">Başlangıç</option>
@@ -386,6 +387,7 @@ export default function ResumeLanguagePage() {
                       class="form-select"
                       aria-label="Default select example"
                       name="languageLevel"
+                     
                     >
                       <option selected>Seviye*</option>
                       <option value="1">Başlangıç</option>

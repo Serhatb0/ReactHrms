@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
-import "./Css/Settings.css";
-export default function SettingsPage() {
+import "./css/ProfilPage.css";
+export default function ProfilPage() {
   return (
     <div>
       <section className="">
@@ -10,11 +11,14 @@ export default function SettingsPage() {
             <div className="profile-tab-nav border-right">
               <div className="p-4">
                 <div className="img-circle text-center ">
-                  <img
-                    src="http://res.cloudinary.com/dmeviw9q7/image/upload/v1623523376/nkorft8y9lgudvrewdlp.jpg"
-                    alt="Image"
-                    className="shadow"
-                  />
+                  <div class="image-upload-profil">
+                    <label for="file-input">
+                      <img className="shadow" src="http://res.cloudinary.com/dmeviw9q7/image/upload/v1623523376/nkorft8y9lgudvrewdlp.jpg" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+               
                 </div>
                 <h4 className="text-center">Serhat Biricik</h4>
               </div>
@@ -93,7 +97,7 @@ export default function SettingsPage() {
                 role="tabpanel"
                 aria-labelledby="account-tab"
               >
-                <h3 className="mb-4">Account Settings</h3>
+                <h3 className="mb-4">Hesap Ayarları Settings</h3>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
@@ -148,8 +152,9 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <button className="btn btn-primary">Güncelle</button>
-                  <button className="btn btn-light" type="reset">Cancel</button>
+                  <button type="submit" class="btn btn-outline-success">
+                    Kaydet
+                  </button>
                 </div>
               </div>
               <div
@@ -182,8 +187,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <button className="btn btn-primary">Güncelle</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button className="btn btn-outline-success">Kaydet</button>
                 </div>
               </div>
               <div
@@ -216,15 +220,14 @@ export default function SettingsPage() {
                           id="recovery"
                         />
                         <label className="form-check-label" htmlFor="recovery">
-                          Recovery
+                          Kurtarma
                         </label>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <button className="btn btn-primary">Update</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button className="btn btn-outline-success">Kaydet</button>
                 </div>
               </div>
               <div
@@ -233,7 +236,7 @@ export default function SettingsPage() {
                 role="tabpanel"
                 aria-labelledby="application-tab"
               >
-                <h3 className="mb-4">Application Settings</h3>
+                <h3 className="mb-4">Uygulama Ayarları</h3>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
@@ -266,8 +269,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div>
-                  <button className="btn btn-primary">Update</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button className="btn btn-outline-success">Kaydet</button>
                 </div>
               </div>
               <div
@@ -276,7 +278,7 @@ export default function SettingsPage() {
                 role="tabpanel"
                 aria-labelledby="notification-tab"
               >
-                <h3 className="mb-4">Notification Settings</h3>
+                <h3 className="mb-4">Bildirim Ayarları</h3>
                 <div className="form-group">
                   <div className="form-check">
                     <input
@@ -286,8 +288,7 @@ export default function SettingsPage() {
                       id="notification1"
                     />
                     <label className="form-check-label" htmlFor="notification1">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Dolorum accusantium accusamus, neque cupiditate quis
+                      E-posta Bildirimleri Almak İstiyor musun?
                     </label>
                   </div>
                 </div>
@@ -300,8 +301,7 @@ export default function SettingsPage() {
                       id="notification2"
                     />
                     <label className="form-check-label" htmlFor="notification2">
-                      hic nesciunt repellat perferendis voluptatum totam porro
-                      eligendi.
+                      SMS bildirimi almak istiyor musun?
                     </label>
                   </div>
                 </div>
@@ -314,14 +314,12 @@ export default function SettingsPage() {
                       id="notification3"
                     />
                     <label className="form-check-label" htmlFor="notification3">
-                      commodi fugiat molestiae tempora corporis. Sed dignissimos
-                      suscipit
+                      şirketlerin yayınladığı reklamları görmek istiyor musun?
                     </label>
                   </div>
                 </div>
                 <div>
-                  <button className="btn btn-primary">Update</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button className="btn btn-outline-success">Kaydet</button>
                 </div>
               </div>
             </div>
