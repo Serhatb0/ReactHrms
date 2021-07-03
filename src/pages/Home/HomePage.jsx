@@ -42,7 +42,7 @@ export default function HomePage() {
               >
                 <Menu.Item name="inbox">
                   <Icon className="angle right"></Icon>
-                  Inboxxx
+                  Inbox
                 </Menu.Item>
               </Menu>
 
