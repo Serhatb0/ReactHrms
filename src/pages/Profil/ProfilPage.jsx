@@ -1,7 +1,16 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
+import React ,{useState}from "react";
+import AccountSettings from "./AccountSettings";
+import ApplicationSettings from "./ApplicationSettings";
 import "./css/ProfilPage.css";
+import NotificationsSettings from "./NotificationsSettings";
+import PasswordSettings from "./PasswordSettings";
+import SecuritySettings from "./SecuritySettings";
+import EmployerAccountSettings from "./EmployerAccountSettings";
 export default function ProfilPage() {
+  const [isEmployer ,setIsEmployer] =  useState(true);
+
   return (
     <div>
       <section className="">
@@ -13,12 +22,14 @@ export default function ProfilPage() {
                 <div className="img-circle text-center ">
                   <div class="image-upload-profil">
                     <label for="file-input">
-                      <img className="shadow" src="http://res.cloudinary.com/dmeviw9q7/image/upload/v1623523376/nkorft8y9lgudvrewdlp.jpg" />
+                      <img
+                        className="shadow"
+                        src="http://res.cloudinary.com/dmeviw9q7/image/upload/v1623523376/nkorft8y9lgudvrewdlp.jpg"
+                      />
                     </label>
 
                     <input id="file-input" type="file" />
                   </div>
-               
                 </div>
                 <h4 className="text-center">Serhat Biricik</h4>
               </div>
@@ -97,65 +108,8 @@ export default function ProfilPage() {
                 role="tabpanel"
                 aria-labelledby="account-tab"
               >
-                <h3 className="mb-4">Hesap Ayarları Settings</h3>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Ad</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Ad"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Soyad</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Soyad"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Email</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Email"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Telefon Numarası</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Telefon Numarası"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Bio</label>
-                      <textarea
-                        className="form-control"
-                        rows={4}
-                        placeholder="Açıklama"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <button type="submit" class="btn btn-outline-success">
-                    Kaydet
-                  </button>
-                </div>
+                {" "}
+               {isEmployer ? <EmployerAccountSettings/> : <AccountSettings/>}
               </div>
               <div
                 className="tab-pane fade"
@@ -163,69 +117,17 @@ export default function ProfilPage() {
                 role="tabpanel"
                 aria-labelledby="password-tab"
               >
-                <h3 className="mb-4">Şifreyi Değiştir</h3>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Eski Şifre</label>
-                      <input type="password" className="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Yeni Şifre</label>
-                      <input type="password" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Şifre Tekrarı</label>
-                      <input type="password" className="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <button className="btn btn-outline-success">Kaydet</button>
-                </div>
+                {" "}
+                <PasswordSettings />
               </div>
+
               <div
                 className="tab-pane fade"
                 id="security"
                 role="tabpanel"
                 aria-labelledby="security-tab"
               >
-                <h3 className="mb-4">Güvenlik ayarları</h3>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Login</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Two-factor auth</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          defaultValue
-                          id="recovery"
-                        />
-                        <label className="form-check-label" htmlFor="recovery">
-                          Kurtarma
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <SecuritySettings/>
                 <div>
                   <button className="btn btn-outline-success">Kaydet</button>
                 </div>
@@ -236,41 +138,8 @@ export default function ProfilPage() {
                 role="tabpanel"
                 aria-labelledby="application-tab"
               >
-                <h3 className="mb-4">Uygulama Ayarları</h3>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          defaultValue
-                          id="app-check"
-                        />
-                        <label className="form-check-label" htmlFor="app-check">
-                          App check
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          defaultValue
-                          id="defaultCheck2"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="defaultCheck2"
-                        >
-                          Lorem ipsum dolor sit.
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <button className="btn btn-outline-success">Kaydet</button>
-                </div>
+               <ApplicationSettings/>
+                
               </div>
               <div
                 className="tab-pane fade"
@@ -278,49 +147,7 @@ export default function ProfilPage() {
                 role="tabpanel"
                 aria-labelledby="notification-tab"
               >
-                <h3 className="mb-4">Bildirim Ayarları</h3>
-                <div className="form-group">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      defaultValue
-                      id="notification1"
-                    />
-                    <label className="form-check-label" htmlFor="notification1">
-                      E-posta Bildirimleri Almak İstiyor musun?
-                    </label>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      defaultValue
-                      id="notification2"
-                    />
-                    <label className="form-check-label" htmlFor="notification2">
-                      SMS bildirimi almak istiyor musun?
-                    </label>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      defaultValue
-                      id="notification3"
-                    />
-                    <label className="form-check-label" htmlFor="notification3">
-                      şirketlerin yayınladığı reklamları görmek istiyor musun?
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <button className="btn btn-outline-success">Kaydet</button>
-                </div>
+                <NotificationsSettings/>
               </div>
             </div>
           </div>

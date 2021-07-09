@@ -1,15 +1,18 @@
-
 import "semantic-ui-css/semantic.min.css";
 import "font-awesome/css/font-awesome.min.css";
+import { useState } from "react";
+import Dashboard from "./layouts/Dashboard";
+import EmployeeDashboard from "../src/EmployeeLayouts/EmployeeDashboard";
 
 
-
-import Dashboard from './layouts/Dashboard';
 
 function App() {
+  const [isEmployee ,setIsEmployee] =  useState(false);
+
+  
   return (
     <div className="App">
-       <Dashboard></Dashboard>
+      {isEmployee ? <EmployeeDashboard/> : <Dashboard/>}
     </div>
   );
 }

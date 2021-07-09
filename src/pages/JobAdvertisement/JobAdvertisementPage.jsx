@@ -1,10 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import React, { useState, useEffect } from "react";
 import "./Css/JobAdvertisementPage.css";
 import { Grid, Pagination } from "semantic-ui-react";
 import JobAdvertisementService from "../../services/jobAdvertisementService";
 import JobAdvertisementSideBarPage from "./JobAdvertisementSideBarPage";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 export default function JobAdvertisementPage() {
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
@@ -28,12 +28,7 @@ export default function JobAdvertisementPage() {
   const handleSelectedPage = (e, { activePage }) => {
     setActivePage(activePage);
   };
-  const options = [
-    { value: "A", text: "As" },
-    { value: "B", text: "B" },
-    { value: "C", text: "C" },
-  ];
-
+ 
   return (
     <div>
       <Grid>
@@ -196,7 +191,7 @@ export default function JobAdvertisementPage() {
                                               </Link>
                                             </a>
                                             <p class="m-0">
-                                              <a href class="employer-name"></a>{" "}
+                                              <a href="//#"class="employer-name"></a>{" "}
                                               <span class="text-muted time">
                                                 5 Gün Once Eklendi
                                               </span>
@@ -232,7 +227,7 @@ export default function JobAdvertisementPage() {
                                         </td>
                                         <td>
                                           <div class="widget-26-job-starred">
-                                            <a className="icon-bookmarks">
+                                            <a href className="icon-bookmarks">
                                              
                                            
                                               <i className="bi bi-bookmarks"></i>
