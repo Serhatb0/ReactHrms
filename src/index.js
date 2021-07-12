@@ -9,13 +9,18 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import {Provider  } from "react-redux";
+import configureStore from "./redux/configureStore";
 
+const store = configureStore();
 
 ReactDOM.render(
+  <Provider store={store}>
   <BrowserRouter>
     {" "}
     <App />
-  </BrowserRouter>,
+  </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 

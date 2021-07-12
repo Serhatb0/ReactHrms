@@ -1,12 +1,10 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import RegisterEmployerService from "../../services/registerEmployerService";
 import "./css/EmployerRegister.css";
 import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
 import { Button } from "semantic-ui-react";
 
 export default function EmployerRegisterPage() {
-  let registerEmployerSerivce = new RegisterEmployerService();
 
   const initialValues = {
     companyName: "",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { validationSchema } from "./Validation/EmployerAccountValidation";
-import EmployerService from "../../services/employerService";
+import EmployerService from "../../redux/services/employerService";
 import { Form, Label } from "semantic-ui-react";
 function EmployerAccountSettings() {
   const [employer, setEmployer] = useState([]);

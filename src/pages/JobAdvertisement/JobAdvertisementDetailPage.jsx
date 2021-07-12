@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./Css/JobAdvertisementDetailPage.css";
-import { Button, Icon, Feed } from "semantic-ui-react";
-import JobAdvertisementService from "../../services/jobAdvertisementService";
+import { Button } from "semantic-ui-react";
+import JobAdvertisementService from "../../redux/services/jobAdvertisementService";
 export default function JobAdvertisementDetailPage() {
   let { id } = useParams();
 

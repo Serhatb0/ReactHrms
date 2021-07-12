@@ -1,7 +1,5 @@
 import React from "react";
 import * as Yup from "yup";
-import  { useState, useEffect } from "react";
-import EmployerService from "../../services/employerService";
 
 import "./CandidateRegisterPage.css";
 import {
@@ -16,16 +14,8 @@ import {
 import { useFormik} from "formik";
 export default function CandidateRegisterPage() {
 
-  const [employer, setEmployer] = useState([]);
-  const employerService = new EmployerService();
 
-  useEffect(() => {
-
-    employerService.getEmployer(3).then((result) => {
-      setEmployer(result.data.data);
-    });
-  }, []);
-
+  
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Zorun Alan"),
@@ -44,7 +34,7 @@ export default function CandidateRegisterPage() {
   const Register = () => {
     const { handleSubmit, handleChange, values, errors } = useFormik({
       initialValues: {
-        firstName: employer.webAddress,
+        firstName:"",
         lastName: "",
         ıdentityNumber: "",
         dateOfBirth: "",

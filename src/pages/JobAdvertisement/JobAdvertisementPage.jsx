@@ -1,40 +1,43 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./Css/JobAdvertisementPage.css";
 import { Grid, Pagination } from "semantic-ui-react";
-import JobAdvertisementService from "../../services/jobAdvertisementService";
 import JobAdvertisementSideBarPage from "./JobAdvertisementSideBarPage";
 import { Link } from "react-router-dom";
+import {
+  getJobPostings,
+  getJobPostingsByPage,
+} from "../../redux/actions/jobPostingsActions";
 export default function JobAdvertisementPage() {
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
-  const [totalPageSize, settotalPageSize] = useState(0);
 
-  const [jobAdvertisements, setjobAdvertisements] = useState([]);
+  const jobPostings = useSelector((state) => state.job.jobPostings);
+  const jobPostingsPage = useSelector(
+    (state) => state.jobPostingspage.jobPostingsPage
+  );
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    let jobAdvertisementService = new JobAdvertisementService();
-    jobAdvertisementService.getJobAdvertisements().then((result) => {
-      settotalPageSize(parseInt(result.data.data.length));
-    });
-    jobAdvertisementService
-      .getAllByPage(activePage, pageSize)
-      .then((result) => {
-        setjobAdvertisements(result.data.data);
-      });
+    dispatch(getJobPostings());
+    dispatch(getJobPostingsByPage(activePage, pageSize));
   }, [activePage, pageSize]);
 
+
   
+
   const handleSelectedPage = (e, { activePage }) => {
     setActivePage(activePage);
   };
- 
+
   return (
     <div>
       <Grid>
         <Grid.Row>
           <Grid.Column width={4}>
-            <JobAdvertisementSideBarPage></JobAdvertisementSideBarPage>
+            <JobAdvertisementSideBarPage pageActive={activePage} sizePage={pageSize} setPage={setActivePage}></JobAdvertisementSideBarPage>
           </Grid.Column>
           <Grid.Column width={12}>
             <div class="container" style={{ marginTop: "4.5em" }}>
@@ -49,7 +52,8 @@ export default function JobAdvertisementPage() {
                               <div class="row">
                                 <div class="col-lg-6">
                                   <div class="records">
-                                    Gosterilen: <b>1-{pageSize}</b> of <b>{totalPageSize}</b> Sonuç
+                                    Gosterilen: <b>1-{pageSize}</b> of{" "}
+                                    <b>{jobPostings.length}</b> Sonuç
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -171,7 +175,7 @@ export default function JobAdvertisementPage() {
                               <div class="table-responsive">
                                 <table class="table widget-26">
                                   <tbody>
-                                    {jobAdvertisements.map((job) => (
+                                    {jobPostingsPage.map((job) => (
                                       <tr key={job.jobPostingsId}>
                                         <td>
                                           <div class="widget-26-job-emp-img">
@@ -191,7 +195,10 @@ export default function JobAdvertisementPage() {
                                               </Link>
                                             </a>
                                             <p class="m-0">
-                                              <a href="//#"class="employer-name"></a>{" "}
+                                              <a
+                                                href="//#"
+                                                class="employer-name"
+                                              ></a>{" "}
                                               <span class="text-muted time">
                                                 5 Gün Once Eklendi
                                               </span>
@@ -228,8 +235,6 @@ export default function JobAdvertisementPage() {
                                         <td>
                                           <div class="widget-26-job-starred">
                                             <a href className="icon-bookmarks">
-                                             
-                                           
                                               <i className="bi bi-bookmarks"></i>
                                             </a>
                                           </div>
@@ -248,7 +253,9 @@ export default function JobAdvertisementPage() {
                         lastItem={null}
                         activePage={activePage}
                         onPageChange={handleSelectedPage}
-                        totalPages={Math.ceil(totalPageSize / pageSize)}
+                        totalPages={Math.ceil(
+                          parseInt(jobPostings.length) / pageSize
+                        )}
                       />
                     </div>
                   </div>
