@@ -1,24 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { Search } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Dropdown } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
-import { getJobPostingsByPage } from "../../redux/actions/jobPostingsActions";
-export default function JobAdvertisementSideBarPage({pageActive,sizePage,setPage}) {
+import { getCitites } from "../../redux/actions/cityActions";
+import { getJobPositions } from "../../redux/actions/jobPositionsActions";
 
-  const jobPostingsPage = useSelector(state => state.jobPostingspage.jobPostingsPage)
+import "./Css/jobAdvertisemenSideBarPage.css";
+export default function JobAdvertisementSideBarPage({
+  handleCity,
+  setFilter
+}) {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  const cities = useSelector((state) => state.city.cities);
+  const jobPositions = useSelector((state) => state.jobPositions.jobPositions);
   useEffect(() => {
-    
-   
-      dispatch(getJobPostingsByPage())
-    
-  }, [pageActive,sizePage])
+    dispatch(getCitites());
+    dispatch(getJobPositions());
+  }, []);
 
+  const [jobPosition, setJobPosition] = useState([]);
+  const [city, setCity] = useState([]);
 
-  const handleCity =()=>{
-    const selectedCity= document.getElementById("city").value;
-    console.log(selectedCity);
-  }
+  const { currentValuesCity } = city;
+
+  const { currentValues } = jobPosition;
+
+  const handleChange = (e, { value }) => {
+    setJobPosition({ currentValues: value });
+
+  };
+  const handleChangeCity = (e, { value }) => {
+    setCity({ currentValuesCity: value });
+
+  };
+  const jobPositionClik = () => {
+    if(currentValues.length !== 0 || currentValuesCity.length !==0){
+      var selectedjobPositions = currentValues
+      var selectedCity = currentValuesCity
+
+    }
+    if(currentValues.length === 0 ){
+      var selectedjobPositions =[null]
+    }
+    if(currentValuesCity.length ===0){
+      var selectedCity =[null]
+
+    } 
+
+    setFilter({cityId:[...selectedCity],jobPositionId: [...selectedjobPositions] });
+    
+  };
+
 
   return (
     <div>
@@ -27,7 +59,7 @@ export default function JobAdvertisementSideBarPage({pageActive,sizePage,setPage
           class=" justify-content-center"
           style={{ margin: "6em 0em 0em 0em" }}
         >
-          <div class="card">
+          <div className="card m-0 p-0">
             <article class="filter-group">
               <header class="card-header">
                 {" "}
@@ -46,19 +78,29 @@ export default function JobAdvertisementSideBarPage({pageActive,sizePage,setPage
               </header>
               <div class="filter-content collapse" id="collapse_aside1">
                 <div class="card-body ">
-                  <select id="city" class="ui dropdown" onChange={handleCity} style={{ width: "13em" }}>
-                    <option value="">Şehirler</option>
-                    <option value="Mardin">Mardin</option>
-                    <option value="Diyarbakır">Diyarbakır</option>
-                    <option value="Batman">Batman</option>
-                    <option value="Ağrı">Ağrı</option>
-                    <option value="Erzurum">Erzurum</option>
-                  </select>
+                <Dropdown
+                      style={{ maxHeight: "7rem" }}
+                      options={cities.map((city) => {
+                        return {
+                          text: city.cityName,
+                          key: city.cityId,
+                          value: city.cityId,
+                        };
+                      })}
+                      placeholder="Şehirler"
+                      search
+                      selection
+                      fluid
+                      multiple
+                      onChange={handleChangeCity}
+                    />
                   <a
                     style={{ margin: "1em 0em 0em 0em" }}
                     href
                     class="highlight-button btn btn-medium button xs-margin-bottom-five"
                     data-abc="true"
+                     onClick={jobPositionClik}
+
                   >
                     Uygula
                   </a>
@@ -138,39 +180,26 @@ export default function JobAdvertisementSideBarPage({pageActive,sizePage,setPage
                 </a>{" "}
               </header>
               <div class="filter-content collapse" id="collapse_aside3">
-                <div class="card-body">
-                  <Search style={{ margin: "0em 0em 0em 0em" }}></Search>
-                  <div style={{ margin: "0.5em 0em 0em 2em" }}>
-                    <label class="custom-control">
-                      {" "}
-                      <input
-                        id="flexRadioDefault2"
-                        type="radio"
-                        name="flexRadioDefault"
-                        class="custom-control-input form-check-input "
-                      />
-                      <div class="custom-control-label">Veri Tabanı Uzmanı</div>
-                    </label>{" "}
-                    <label class="custom-control">
-                      {" "}
-                      <input
-                        id="flexRadioDefault2"
-                        type="radio"
-                        name="flexRadioDefault"
-                        class="custom-control-input form-check-input "
-                      />
-                      <div class="custom-control-label">Yazılım Uzmanı</div>
-                    </label>{" "}
-                    <label class="custom-control">
-                      {" "}
-                      <input
-                        id="flexRadioDefault2"
-                        type="radio"
-                        name="flexRadioDefault"
-                        class="custom-control-input form-check-input "
-                      />
-                      <div class="custom-control-label">Muhasebe Uzmanı</div>
-                    </label>{" "}
+                <div className="card-body ">
+                  <div className="">
+                    {" "}
+                    <Dropdown
+                      id="jobPositions"
+                      style={{ maxHeight: "7rem" }}
+                      options={jobPositions.map((job,) => {
+                        return {
+                          text: job.positionName,
+                          key: job.id,
+                          value: job.id,
+                        };
+                      })}
+                      placeholder="İş Pozisyonları"
+                      search
+                      selection
+                      fluid
+                      multiple
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
                 <a
@@ -178,6 +207,8 @@ export default function JobAdvertisementSideBarPage({pageActive,sizePage,setPage
                   href
                   class="highlight-button btn btn-medium button xs-margin-bottom-five"
                   data-abc="true"
+                  onClick={jobPositionClik}
+
                 >
                   Uygula
                 </a>

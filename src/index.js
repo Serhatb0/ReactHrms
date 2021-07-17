@@ -9,6 +9,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import 'bootstrap-select/dist/js/bootstrap-select.min.js';
+import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import 'jquery/dist/jquery.slim.min.js';
+
 import {Provider  } from "react-redux";
 import configureStore from "./redux/configureStore";
 

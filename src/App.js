@@ -3,7 +3,6 @@ import "font-awesome/css/font-awesome.min.css";
 import { useState } from "react";
 import Dashboard from "./layouts/Dashboard";
 import EmployeeDashboard from "../src/EmployeeLayouts/EmployeeDashboard";
-import Deneme from "./deneme";
 
 function App() {
   const [isEmployee, setIsEmployee] = useState(false);
@@ -13,7 +12,6 @@ function App() {
       {isEmployee ? <EmployeeDashboard/> : <Dashboard/>}
     </div>
 
-    // <Deneme></Deneme>
     
   );
 }

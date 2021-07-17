@@ -12,6 +12,11 @@ export default class JobAdvertisementService{
     getAllByPage(pageNo ,pageSize){
         return http.get("/JobPostings/getallPage?pageNo=" +pageNo +"&pageSize="+pageSize)
     }
+
+    getAllByPageFilter(pageNo,pageSize,filterOption){
+        return http.post(`/JobPostings/getByActiveAndFilter?pageNo=${pageNo}&pageSize=${pageSize}`,filterOption)
+    }
+
     
 }
 

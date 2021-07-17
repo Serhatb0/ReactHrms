@@ -7,37 +7,46 @@ import { Grid, Pagination } from "semantic-ui-react";
 import JobAdvertisementSideBarPage from "./JobAdvertisementSideBarPage";
 import { Link } from "react-router-dom";
 import {
-  getJobPostings,
-  getJobPostingsByPage,
+  getJobPostingsByPageFilter,
+  getJobPostingsByPageFilterLenght,
 } from "../../redux/actions/jobPostingsActions";
 export default function JobAdvertisementPage() {
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
+  const [filter, setFilter] = useState({});
 
-  const jobPostings = useSelector((state) => state.job.jobPostings);
-  const jobPostingsPage = useSelector(
-    (state) => state.jobPostingspage.jobPostingsPage
+  const jobPostingspageFilter = useSelector(
+    (state) => state.jobPostingspageFilter.jobPostingsPageFilter
+  );
+
+  const jobPostingspageFilterLenght = useSelector(
+    (state) => state.jobPostingsPageFilterLenght.jobPostingsPageFilterLenght
   );
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getJobPostings());
-    dispatch(getJobPostingsByPage(activePage, pageSize));
-  }, [activePage, pageSize]);
+    dispatch(getJobPostingsByPageFilter(activePage, pageSize, filter));
+    dispatch(getJobPostingsByPageFilterLenght(activePage, pageSize, filter));
+  }, [filter, activePage, pageSize]);
 
-
-  
+  const handleCity = () => {
+    const selectedCity = document.getElementById("city").value;
+  };
 
   const handleSelectedPage = (e, { activePage }) => {
     setActivePage(activePage);
   };
+  const deneme = () => {};
 
   return (
     <div>
       <Grid>
         <Grid.Row>
           <Grid.Column width={4}>
-            <JobAdvertisementSideBarPage pageActive={activePage} sizePage={pageSize} setPage={setActivePage}></JobAdvertisementSideBarPage>
+            <JobAdvertisementSideBarPage
+              setFilter={setFilter}
+              handleCity={handleCity}
+            ></JobAdvertisementSideBarPage>
           </Grid.Column>
           <Grid.Column width={12}>
             <div class="container" style={{ marginTop: "4.5em" }}>
@@ -53,7 +62,7 @@ export default function JobAdvertisementPage() {
                                 <div class="col-lg-6">
                                   <div class="records">
                                     Gosterilen: <b>1-{pageSize}</b> of{" "}
-                                    <b>{jobPostings.length}</b> Sonuç
+                                    <b>{jobPostingspageFilterLenght}</b> Sonuç
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -175,7 +184,7 @@ export default function JobAdvertisementPage() {
                               <div class="table-responsive">
                                 <table class="table widget-26">
                                   <tbody>
-                                    {jobPostingsPage.map((job) => (
+                                    {jobPostingspageFilter.map((job) => (
                                       <tr key={job.jobPostingsId}>
                                         <td>
                                           <div class="widget-26-job-emp-img">
@@ -254,10 +263,11 @@ export default function JobAdvertisementPage() {
                         activePage={activePage}
                         onPageChange={handleSelectedPage}
                         totalPages={Math.ceil(
-                          parseInt(jobPostings.length) / pageSize
+                          parseInt(jobPostingspageFilterLenght) / pageSize
                         )}
                       />
                     </div>
+                    <button onClick={deneme}>kaydet</button>
                   </div>
                 </div>
               </div>
