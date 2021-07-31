@@ -13,8 +13,16 @@ export default class JobAdvertisementService{
         return http.get("/JobPostings/getallPage?pageNo=" +pageNo +"&pageSize="+pageSize)
     }
 
-    getAllByPageFilter(pageNo,pageSize,filterOption){
-        return http.post(`/JobPostings/getByActiveAndFilter?pageNo=${pageNo}&pageSize=${pageSize}`,filterOption)
+    getAllByPageFilter(max,min,pageNo,pageSize,filterOption,){
+        return http.post(`/JobPostings/getByActiveAndFilter?max=${max}&min=${min}&pageNo=${pageNo}&pageSize=${pageSize}`,filterOption)
+    }
+
+    getAllByPageIsActive(pageNo,pageSize,isActive){
+        return http.get(`/JobPostings/getAllByisActive?isActive=${isActive}&pageNo=${pageNo}&pageSize=${pageSize}`)
+    }
+
+    getAllByPageIsNull(pageNo,pageSize){
+        return http.get(`/JobPostings/getAllByNull?pageNo=${pageNo}&pageSize=${pageSize}`)
     }
 
     

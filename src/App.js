@@ -8,8 +8,8 @@ function App() {
   const [isEmployee, setIsEmployee] = useState(false);
 
   return (
-    <div className="App">
-      {isEmployee ? <EmployeeDashboard/> : <Dashboard/>}
+    <div  className="App">
+      {isEmployee ? <EmployeeDashboard /> : <Dashboard />}
     </div>
 
     

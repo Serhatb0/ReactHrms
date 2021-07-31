@@ -1,27 +1,145 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-
-import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
-
+import React, { useEffect, useState } from "react";
 import education from "../../img/education/indir (1)_770x400.jpg";
 import education1 from "../../img/education/student-education-750x460-1_770x400.jpg";
 import education2 from "../../img/education/images_770x400.jpg";
-export default function ResumeEducationPage() {
-  const initialValues = {
-    schollName: "Okul Adı",
-    episode: "Bölüm",
-    startOfSchool: "2019-05-08",
-    graduationYear: "2021-08-09",
+import { useDispatch, useSelector } from "react-redux";
+import { getEducations } from "../../redux/actions/educationsActions";
+import { getEducationsId } from "../../redux/actions/educationsActions";
+import {  } from "../../redux/services/educationService";
+import EducationService from "../../redux/services/educationService";
+import { Button, Form } from "semantic-ui-react";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+
+function ResumeEducationPage() {
+  const [selectedEducationId, setSelectedEducationId] = useState();
+
+  const dispatch = useDispatch();
+
+  const educations = useSelector((state) => state.educations.educations);
+  // const education = useSelector((state) => state.educationsId.educationsId);
+  const [education, setEducation] = useState([])
+  useEffect(() => {
+    dispatch(getEducations(13));
+  }, []);
+
+  useEffect(() => {
+    // dispatch(getEducationsId(selectedEducationId));
+    const educationService = new EducationService();
+
+    educationService.getAllById(selectedEducationId)
+    .then(result =>setEducation(result.data.data))
+    
+  }, [selectedEducationId]);
+
+  console.log(education);
+  console.log(selectedEducationId);
+
+  var initialValues = {
+    schoolName: education.schoolName,
+    episode: education.episode,
+    startOfSchool: education.startOfSchool,
+    graduationYear: education.graduationYear,
   };
 
-  const schema = Yup.object({
-    schollName: Yup.string().required("Zorunlu Alan"),
-    episode: Yup.string().required("Zorunlu Alan"),
-    startOfSchool: Yup.date().required("ZorunAlan"),
-    graduationYear: Yup.date().required("Zorun Alan"),
+   const validationSchema = Yup.object({
+    schoolName: Yup.string().required("Zorunlu Alan"),
+    episode: Yup.string().required("Web Adres Zorunlu"),
+    startOfSchool: Yup.string().required("Zorunlu Alan"),
+    graduationYear: Yup.string().required("Zorunlu Alan"),
+
   });
+  
+  const Education = () => {
+    const { handleSubmit, handleChange, values, errors, touched } = useFormik({
+      initialValues:initialValues,
+      validationSchema,
+      onSubmit: (values) => {
+       console.log(values);
+      },
+    });
+
+    return (
+        <div id="EducationUpdateModal" className="modal fade">
+          <div className="modal-dialog">
+            <div className="modal-content">
+         
+                <div className="modal-header">
+                  <h4 className="modal-title">Eğitim Bilgileri</h4>
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div className="modal-body"></div>
+                <div className="container">
+                <Form onSubmit={handleSubmit}>
+
+                  <form>
+
+                    <label htmlFor="scholl">Okul Adı</label>
+
+                    <Form.Input
+                      id="scholl"
+                      value={values.schoolName}
+                      placeholder="SchollName"
+                      name="schollName"
+                      onChange={handleChange}
+                      values={values.schoolName}
+                    />
+                  <label htmlFor="episode">Bölum</label>
+                  <Form.Input
+                    id="episode"
+                    value={values.episode}
+                    placeholder="episode"
+                    name="episode"
+                    onChange={handleChange}
+                    values={values.episode}
+                  />
+                  <label htmlFor="startOfSchool">Okul Başlangıç Tarihi</label>
+                  <Form.Input
+                    id="startOfSchool"
+                    value={values.startOfSchool}
+                    placeholder="startOfSchool"
+                    name="startOfSchool"
+                    onChange={handleChange}
+                    values={values.startOfSchool}
+                  />
+                  <label htmlFor="graduationYear">Mezuniyet Tarihi</label>
+                  <Form.Input
+                    id="graduationYear"
+                    value={values.graduationYear}
+                    placeholder="graduationYear"
+                    name="graduationYear"
+                    onChange={handleChange}
+                    values={values.graduationYear}
+                  />
+                   </form>
+            </Form>
+                </div>
+             
+              <div className="modal-footer">
+                <input
+                  type="button"
+                  className="btn btn-danger"
+                  data-dismiss="modal"
+                  defaultValue="Cancel"
+                />
+                <Button type="submit" color="teal" fluid size="large">
+                  Güncelle
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+    );
+  };
+
   return (
     <div>
       <section>
@@ -36,106 +154,67 @@ export default function ResumeEducationPage() {
                 <h4 className="card-title">Eğitim Bilgileri</h4>
                 <div className="card-block px-6">
                   <div className="row">
-                    <div className="col-10">
-                      <div className="card  p-3 m-0">
-                        <div className="card-body p-0 m-0">
-                          <div style={{ float: "left" }}>
-                            <i
-                              className="bi bi-bank2 fa-3x "
-                              style={{ float: "left" }}
-                            ></i>
-
-                            <p style={{ margin: "0em 0em 0em 4em" }}>
-                              <b>Mardin Artuklu</b>
-                            </p>
-
-                            <p style={{ margin: "0em 0em 0em 4em" }}>
-                              2019-2021
-                            </p>
-                            <p
-                              style={{ marginLeft: "4em" }}
-                              className="card-text"
-                            >
-                              Bilgisiyar Programcılığı
-                            </p>
-                          </div>
-                          <div>
-                            <a
-                              href="#EducationUpdateModal"
-                              className="delete edit-add"
-                              data-toggle="modal"
-                            >
+                    {educations.map((education) => (
+                      <div
+                        key={education.id}
+                        className="col-10"
+                        style={{ marginBottom: "0.5em" }}
+                      >
+                        <div className="card  p-3 m-0">
+                          <div className="card-body p-0 m-0">
+                            <div style={{ float: "left" }}>
                               <i
-                                className="bi bi-pencil fa-2x  "
+                                className="bi bi-bank2 fa-3x "
+                                style={{ float: "left" }}
+                              ></i>
+
+                              <p style={{ margin: "0em 0em 0em 4em" }}>
+                                <b>{education.schoolName}</b>
+                              </p>
+
+                              <p style={{ margin: "0em 0em 0em 4em" }}>
+                                {education.startOfSchool} -{" "}
+                                {education.graduationYear}
+                              </p>
+                              <p
+                                style={{ marginLeft: "4em" }}
+                                className="card-text"
+                              >
+                                {education.episode}
+                              </p>
+                            </div>
+                            <div>
+                              <i
+                                href="#EducationUpdateModal"
+                                data-toggle="modal"
+                                className="bi bi-pencil fa-2x delete edit-add "
                                 style={{
-                                  margin: "0em 0em 0em 7.3em",
+                                  margin: "0em 0em 0em 6.8em",
                                   width: "40px",
                                   height: "40px",
                                 }}
+                                onClick={()=> setSelectedEducationId(education.id)}
                               ></i>
-                            </a>
-                            <a
-                              href="#EducationRemoveModal"
-                              className="delete edit-remove"
-                              data-toggle="modal"
-                            >
-                              <i
-                                className="bi bi-eraser fa-2x "
-                                style={{
-                                  margin: "0em 0em 0em 7.3em",
-                                  width: "40px",
-                                  height: "40px",
-                                }}
-                              ></i>
-                            </a>
+
+                              <a
+                                href="#EducationRemoveModal"
+                                className="delete edit-remove"
+                                data-toggle="modal"
+                              >
+                                <i
+                                  className="bi bi-eraser fa-2x "
+                                  style={{
+                                    margin: "0em 0em 0em 6.8em",
+                                    width: "40px",
+                                    height: "40px",
+                                  }}
+                                ></i>
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-10" style={{ marginTop: "2em" }}>
-                      <div className="card  p-3 m-0">
-                        <div className="card-body p-0 m-0">
-                          <div style={{ float: "left" }}>
-                            <i
-                              className="bi bi-bank2 fa-3x "
-                              style={{ float: "left" }}
-                            ></i>
-
-                            <p style={{ margin: "0em 0em 0em 4em" }}>
-                              <b>Mardin Artuklu</b>
-                            </p>
-
-                            <p style={{ margin: "0em 0em 0em 4em" }}>
-                              2019-2021
-                            </p>
-                            <p
-                              style={{ marginLeft: "4em" }}
-                              className="card-text"
-                            >
-                              Bilgisiyar Programcılığı
-                            </p>
-                          </div>
-                          <div>
-                            <i
-                              className="bi bi-pencil fa-2x "
-                              style={{
-                                margin: "0em 0em 0em 7.3em",
-                                width: "40px",
-                                height: "40px",
-                              }}
-                            ></i>
-                            <i
-                              className="bi bi-eraser fa-2x "
-                              style={{
-                                margin: "0em 0em 0em 7.3em",
-                                width: "40px",
-                                height: "40px",
-                              }}
-                            ></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   <br />
@@ -205,106 +284,45 @@ export default function ResumeEducationPage() {
         <br />
         <br />
       </section>
-
       {/* Modal */}
-      <Formik
-        initialValues={initialValues}
-        validationSchema={schema}
-        onSubmit={(values) => {}}
-      >
-        <Form>
-          <div id="EducationUpdateModal" className="modal fade">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <form>
-                  <div className="modal-header">
-                    <h4 className="modal-title">Eğitim Bilgileri</h4>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-hidden="true"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <div className="modal-body"></div>
-                  <div className="container">
-                    <BiricikTextInput
-                      className="form-control"
-                      name="schollName"
-                      type="text"
-                    ></BiricikTextInput>
-                    <BiricikTextInput
-                      style={{ marginTop: "2em" }}
-                      className="form-control"
-                      name="episode"
-                      type="text"
-                    ></BiricikTextInput>
-                    <BiricikTextInput
-                      style={{ marginTop: "2em" }}
-                      className="form-control "
-                      name="startOfSchool"
-                      type="date"
-                    ></BiricikTextInput>
-                    <BiricikTextInput
-                      style={{ margin: "2em 0em 1em 0em" }}
-                      className="form-control "
-                      name="graduationYear"
-                      type="date"
-                    ></BiricikTextInput>
-                  </div>
-                </form>
 
-                <div className="modal-footer">
-                  <input
-                    type="button"
-                    className="btn btn-danger"
-                    data-dismiss="modal"
-                    defaultValue="Cancel"
-                  />
-                  <button type="submit" className="btn btn-success">
-                    Güncelle
-                  </button>
-                </div>
+      <div id="EducationRemoveModal" className="modal fade">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <form>
+              <div className="modal-header">
+                <h4 className="modal-title">Eğitim Bilgileri</h4>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  ×
+                </button>
               </div>
-            </div>
-          </div>
-          <div id="EducationRemoveModal" className="modal fade">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <form>
-                  <div className="modal-header">
-                    <h4 className="modal-title">Eğitim Bilgileri</h4>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-hidden="true"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <label>Onaylıyormusunuz?</label>
-                  </div>
-                  <div className="modal-footer">
-                    <input
-                      type="button"
-                      className="btn btn-danger"
-                      data-dismiss="modal"
-                      defaultValue="İptal Et"
-                    />
-                    <button type="submit" className="btn btn-success">
-                      Evet
-                    </button>
-                  </div>
-                </form>
+              <div className="modal-body">
+                <label>Onaylıyormusunuz?</label>
               </div>
-            </div>
+              <div className="modal-footer">
+                <input
+                  type="button"
+                  className="btn btn-danger"
+                  data-dismiss="modal"
+                  defaultValue="İptal Et"
+                />
+                <button type="submit" className="btn btn-success">
+                  Evet
+                </button>
+              </div>
+            </form>
           </div>
-        </Form>
-      </Formik>
+        </div>
+      </div>
+      <Education></Education>
+      
+      
     </div>
   );
 }
+export default ResumeEducationPage;

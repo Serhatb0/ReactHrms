@@ -1,5 +1,5 @@
-import { cities } from "../initialValues/city";
-import { GET_CİTİES_SUCCESS } from "../actions/cityActions";
+import { cities } from "../../initialValues/city";
+import { GET_CİTİES_SUCCESS } from "../../actions/cityActions";
 
 const initialState = {
   cities: cities,

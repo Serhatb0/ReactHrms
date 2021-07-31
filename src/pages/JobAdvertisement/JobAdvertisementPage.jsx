@@ -14,6 +14,10 @@ export default function JobAdvertisementPage() {
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
   const [filter, setFilter] = useState({});
+  const [minSalary, setMinSalary] = useState({  minSalary: "0"})
+  const [maxSalary, setMaxSalary] = useState({  maxSalary: "0"})
+  const [max, setMax] = useState(99999)
+  const [min, setMin] = useState(0)
 
   const jobPostingspageFilter = useSelector(
     (state) => state.jobPostingspageFilter.jobPostingsPageFilter
@@ -23,20 +27,22 @@ export default function JobAdvertisementPage() {
     (state) => state.jobPostingsPageFilterLenght.jobPostingsPageFilterLenght
   );
 
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getJobPostingsByPageFilter(activePage, pageSize, filter));
-    dispatch(getJobPostingsByPageFilterLenght(activePage, pageSize, filter));
-  }, [filter, activePage, pageSize]);
+   
 
-  const handleCity = () => {
-    const selectedCity = document.getElementById("city").value;
-  };
+    dispatch(getJobPostingsByPageFilter(max,min,activePage, pageSize, filter,));
+    dispatch(getJobPostingsByPageFilterLenght(max,min,activePage, pageSize, filter ));
+  }, [filter, activePage, pageSize,]);
+
+  
 
   const handleSelectedPage = (e, { activePage }) => {
     setActivePage(activePage);
   };
-  const deneme = () => {};
+ 
+ 
 
   return (
     <div>
@@ -45,7 +51,12 @@ export default function JobAdvertisementPage() {
           <Grid.Column width={4}>
             <JobAdvertisementSideBarPage
               setFilter={setFilter}
-              handleCity={handleCity}
+              setMaxSalary={setMaxSalary}
+              setMinSalary = {setMinSalary}
+              minSalary={minSalary}
+              maxSalary={maxSalary}
+              setMin={setMin}
+              setMax={setMax}
             ></JobAdvertisementSideBarPage>
           </Grid.Column>
           <Grid.Column width={12}>
@@ -200,7 +211,7 @@ export default function JobAdvertisementPage() {
                                               <Link
                                                 to={`/jobadvertisement/${job.jobPostingsId}`}
                                               >
-                                                {job.employer.companyName}
+                                                {job.companyName}
                                               </Link>
                                             </a>
                                             <p class="m-0">
@@ -217,12 +228,12 @@ export default function JobAdvertisementPage() {
                                         <td>
                                           <div class="widget-26-job-info">
                                             <p class="type m-0">
-                                              {job.typesOfWork}
+                                              {job.typesOfWorkName}
                                             </p>
                                             <p class="text-muted m-0">
                                               <span class="location">
                                                 <i className="location arrow    icon"></i>{" "}
-                                                {job.city.cityName}
+                                                {job.cityName}
                                               </span>
                                             </p>
                                           </div>
@@ -237,7 +248,7 @@ export default function JobAdvertisementPage() {
                                             <i class="indicator bg-danger"></i>
                                             <span>
                                               {" "}
-                                              {job.jobPosition.positionName}
+                                              {job.positionName}
                                             </span>
                                           </div>
                                         </td>
@@ -267,7 +278,6 @@ export default function JobAdvertisementPage() {
                         )}
                       />
                     </div>
-                    <button onClick={deneme}>kaydet</button>
                   </div>
                 </div>
               </div>

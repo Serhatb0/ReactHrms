@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-redeclare */
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { validationSchema } from "./Validation/EmployerAccountValidation";
@@ -11,7 +13,9 @@ function EmployerAccountSettings() {
     employerService.getEmployer(3).then((result) => {
       setEmployer(result.data.data);
     });
+  
   }, []);
+
 
   const localStorageEmployer = JSON.parse(localStorage.getItem(3));
   if (localStorageEmployer !== null) {

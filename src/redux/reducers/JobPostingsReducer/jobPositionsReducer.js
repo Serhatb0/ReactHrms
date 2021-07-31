@@ -1,5 +1,5 @@
-import { jobPositions } from "../initialValues/jobPositions";
-import { GET_JOBPOSİTİONS_SUCCESS } from "../actions/jobPositionsActions";
+import { jobPositions } from "../../initialValues/jobPositions";
+import { GET_JOBPOSİTİONS_SUCCESS } from "../../actions/jobPositionsActions";
 
 const initialState = {
     jobPositions:jobPositions

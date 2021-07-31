@@ -1,9 +1,12 @@
-import { jobPostingsPageFilter } from "../initialValues/jobPostings";
-import { GET_JOB_BYPAGE_FILTER } from "../actions/jobPostingsActions";
+import { jobPostingsPageFilter } from "../../initialValues/jobPostings";
+import { GET_JOB_BYPAGE_FILTER } from "../../actions/jobPostingsActions";
+
+
 
 
 const initialState = {
     jobPostingsPageFilter: jobPostingsPageFilter,
+  
   };
   
 

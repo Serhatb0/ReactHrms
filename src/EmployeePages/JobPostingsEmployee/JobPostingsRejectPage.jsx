@@ -1,7 +1,29 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Pagination } from "semantic-ui-react";
+import { getAllByPageIsActive } from "../../redux/actions/employeeJobPostingsActions";
 
 export default function JobPostingsRejectPage() {
+  const [activePage, setActivePage] = useState(1);
+  const [pageSize] = useState(10);
+  const [isActive] = useState(false);
+
+
+  const employeeJobPostings = useSelector(state => state.employeeJobPostingsIsActive.employeeJobPostingsIsActive)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    dispatch(getAllByPageIsActive(activePage,pageSize,isActive))
+  }, [activePage,pageSize,dispatch,isActive])
+
+  const handleSelectedPage = (e, { activePage }) => {
+    setActivePage(activePage);
+    console.log(activePage);
+  };
+
+
   return (
     <div>
       <div>
@@ -29,57 +51,72 @@ export default function JobPostingsRejectPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td></td>
-                  <td>Thomas Hardy</td>
-                  <td>thomashardy@mail.com</td>
-                  <td>Veri Tabanı Uzmanı</td>
-                  <td>2021-05-08</td>
-                  <td>Tam Zamanlı</td>
-                  <td>Mardin</td>
-                  <td>500-559</td>
-                </tr>
+                {employeeJobPostings.map((job)=>(
+                   <tr>
+                   <td></td>
+                   <td>{job.employer.companyName}</td>
+                   <td>{job.employer.webAddress}</td>
+                   <td>{job.jobPosition.positionName}</td>
+                   <td>{}</td>
+                   <td>{job.city.cityName}</td>
+                   <td>{job.minSalary} - {job.maxSalary}</td>
+                   <td style={{width:"130px"}}>
+                      <a
+                        href="#EmployeeAcceptModal"
+                        className="edit"
+                        data-toggle="modal"
+                      >
+                        <i
+                          className="bi bi-check-circle"
+                          data-toggle="tooltip"
+                          title="Edit"
+                        >
+                
+                        </i>
+                      </a>
+                      <a
+                        href="#EmployeeRejectModal"
+                        className="delete"
+                        data-toggle="modal"
+                      >
+                        <i
+                          className="bi bi-x-circle"
+                          data-toggle="tooltip"
+                          title="Delete"
+                        >
+                         
+                        </i>
+                      </a>
+                      <a
+                        href="#eyeEmployeeModal"
+                        className="eye"
+                        data-toggle="modal"
+                      >
+                        <i
+                          className="bi bi-eye-fill"
+                          data-toggle="tooltip"
+                          title="eye"
+                        >
+                         
+                        </i>
+                      </a>
+                    </td>
+                 </tr>
+                ))}
+                
               </tbody>
             </table>
             <div className="clearfix">
               <div className="hint-text">
                 Showing <b>5</b> out of <b>25</b> entries
               </div>
-              <ul className="pagination">
-                <li className="page-item disabled">
-                  <a href="#">Previous</a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    2
-                  </a>
-                </li>
-                <li className="page-item active">
-                  <a href="#" className="page-link">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    4
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    5
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    Next
-                  </a>
-                </li>
-              </ul>
+              <Pagination
+                        firstItem={null}
+                        lastItem={null}
+                        activePage={activePage}
+                        onPageChange={handleSelectedPage}
+                        totalPages={5}
+                      />
             </div>
           </div>
         </div>

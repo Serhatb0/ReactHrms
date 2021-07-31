@@ -1,5 +1,5 @@
-import { jobPostingsPageFilterLenght } from "../initialValues/jobPostings";
-import { GET_JOB_BYPAGE_FILTER_LENGHT } from "../actions/jobPostingsActions";
+import { jobPostingsPageFilterLenght } from "../../initialValues/jobPostings";
+import { GET_JOB_BYPAGE_FILTER_LENGHT } from "../../actions/jobPostingsActions";
 
 
 const initialState = {

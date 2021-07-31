@@ -1,8 +1,26 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./css/JobPostingsConfirmationPage.css";
-
+import {getAllByPageIsNull} from "../../redux/actions/employeeJobPostingsActions";
+import { Pagination } from "semantic-ui-react";
 export default function JobPostingsConfirmationPage() {
+
+  const [activePage, setActivePage] = useState(1);
+  const [pageSize] = useState(10);
+
+  const employeeJobPostings = useSelector(state => state.employeeJobPostingsIsActive.employeeJobPostingsIsNull)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+    dispatch(getAllByPageIsNull(activePage,pageSize))
+  }, [activePage,pageSize,dispatch])
+
+
+  const handleSelectedPage = (e, { activePage }) => {
+    setActivePage(activePage);
+  };
   return (
     <div>
       <div>
@@ -38,27 +56,16 @@ export default function JobPostingsConfirmationPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <span className="custom-checkbox">
-                      <input
-                        type="checkbox"
-                        id="checkbox1"
-                        name="options[]"
-                        defaultValue={1}
-                      />
-                      <label htmlFor="checkbox1" />
-                    </span>
-                  </td>
-                  <td>Thomas Hardy</td>
-                  <td>thomashardy@mail.com</td>
-                  <td>Veri Tabanı Uzmanı</td>
-                  <td>2021-05-08</td>
-                  <td>Tam Zamanlı</td>
-                  <td>Mardin</td>
-                  <td>500-559</td>
-             
-                  <td style={{width:"130px"}}>
+              {employeeJobPostings.map((job)=>(
+                 <tr>
+                 <td></td>
+                 <td>{job.employer.companyName}</td>
+                 <td>{job.employer.webAddress}</td>
+                 <td>{job.jobPosition.positionName}</td>
+                 <td>{}</td>
+                 <td>{job.city.cityName}</td>
+                 <td>{job.minSalary} - {job.maxSalary}</td>
+                 <td style={{width:"130px"}}>
                     <a
                       href="#EmployeeAcceptModal"
                       className="edit"
@@ -99,7 +106,8 @@ export default function JobPostingsConfirmationPage() {
                       </i>
                     </a>
                   </td>
-                </tr>
+               </tr>
+              ))}
                
                 
               </tbody>
@@ -108,41 +116,13 @@ export default function JobPostingsConfirmationPage() {
               <div className="hint-text">
                 Showing <b>5</b> out of <b>25</b> entries
               </div>
-              <ul className="pagination">
-                <li className="page-item disabled">
-                  <a href="#">Previous</a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    2
-                  </a>
-                </li>
-                <li className="page-item active">
-                  <a href="#" className="page-link">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    4
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    5
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a href="#" className="page-link">
-                    Next
-                  </a>
-                </li>
-              </ul>
+              <Pagination
+                        firstItem={null}
+                        lastItem={null}
+                        activePage={activePage}
+                        onPageChange={handleSelectedPage}
+                        totalPages={5}
+                      />
             </div>
           </div>
         </div>

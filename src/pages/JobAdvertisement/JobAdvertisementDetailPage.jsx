@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, {  useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./Css/JobAdvertisementDetailPage.css";
 import { Button } from "semantic-ui-react";
-import JobAdvertisementService from "../../redux/services/jobAdvertisementService";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getJobPostingsId } from "../../redux/actions/jobPostingsActions";
 export default function JobAdvertisementDetailPage() {
   let { id } = useParams();
 
-  const [jobAdvertisement, setjobAdvertisement] = useState({});
-
+  const jobById = useSelector((state) => state.jobPostingsGetId.jobPostingsId);
+  
+  const dispatch = useDispatch();
   useEffect(() => {
-    let jobAdvertisementService = new JobAdvertisementService();
-    jobAdvertisementService
-      .getAllByjobPostingsId(id)
-      .then((result) => setjobAdvertisement(result.data.data));
-  }, []);
+    dispatch(getJobPostingsId(id));
 
-  console.log(jobAdvertisement);
+    
+  }, []);
+ 
   return (
     <div>
       <link
@@ -47,6 +49,9 @@ export default function JobAdvertisementDetailPage() {
         href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
         rel="stylesheet"
       ></link>
+      {jobById.map((job)=>(
+
+     
       <div
         class="container bootstrap snippets bootdey"
         style={{ marginTop: "4em" }}
@@ -64,8 +69,11 @@ export default function JobAdvertisementDetailPage() {
                     alt=""
                   />
                 </a>
-                <h1>{jobAdvertisement.employer?.companyName}</h1>
-                <p>{jobAdvertisement.employer?.email}</p>
+
+                <h1>{job.companyName}</h1>
+
+                <p>{job.webAddress}</p>
+
                 <div>
                   <Button circular color="facebook" icon="facebook" />
                   <Button circular color="twitter" icon="twitter" />
@@ -85,8 +93,9 @@ export default function JobAdvertisementDetailPage() {
           <div class="profile-info col-md-9">
             <div class="panel" style={{ marginTop: "2em" }}>
               <div class="bio-graph-heading" style={{ background: "#0a1931" }}>
-                {jobAdvertisement.jobDescription}
+                {job.jobDescription}
               </div>
+
               <div className="" style={{ marginLeft: "0em" }}>
                 <div
                   class="card "
@@ -101,9 +110,8 @@ export default function JobAdvertisementDetailPage() {
                     <div class="card-body">
                       <div class="media d-flex">
                         <div class="media-body text-left">
-                          <h3 class="success">
-                            {jobAdvertisement.numberOfOpenPositions}
-                          </h3>
+                          <h3 class="success">{job.numberOfOpenPositions}</h3>
+
                           <span>Açık Pozisyon Adedi</span>
                         </div>
                         <div class="align-self-center">
@@ -128,8 +136,7 @@ export default function JobAdvertisementDetailPage() {
                       <div class="media align-items-stretch">
                         <div class="">
                           <h5 class="mr-2 success">
-                            ${jobAdvertisement.minSalary} -
-                            {jobAdvertisement.maxSalary}
+                            ${job.minSalary} -{job.maxSalary}
                           </h5>
                         </div>
                         <div class="media-body">
@@ -155,22 +162,17 @@ export default function JobAdvertisementDetailPage() {
                 >
                   <div class="card-content">
                     <div class="card-body">
-                      <div class="media d-flex" style={{marginBottom:"4em"}}>
-                        <div class="media-body " style={{marginRight:"1em"}}>
-                          <h5 class="danger">
-                            {jobAdvertisement.city?.cityName}
-                          </h5>
+                      <div class="media d-flex" style={{ marginBottom: "4em" }}>
+                        <div class="media-body " style={{ marginRight: "1em" }}>
+                          <h5 class="danger">{job.cityName}</h5>
                           <span>Konum</span>
                         </div>
                         <div class="media-body ">
-                          <h5 class="danger">
-                            {jobAdvertisement.applicationDeadline}
-                          </h5>
+                          <h5 class="danger">{job.applicationDeadline}</h5>
+
                           <span>Son Başvuru Tarihi</span>
                         </div>
-                      
                       </div>
-                    
                     </div>
                   </div>
                 </div>
@@ -187,19 +189,22 @@ export default function JobAdvertisementDetailPage() {
                   <div class="card-content">
                     <div class="card-body">
                       <div class="media d-flex">
-                      
                         <div class="media-body text-right">
-                          <h5 className="primary">
-                            {jobAdvertisement.jobPosition?.positionName}
-                          </h5>
+                          <h5 className="primary">{job.positionName}</h5>
+
                           <span>Çalışma Pozisyonu</span>
                         </div>
-                        <div class="media-body " >
-                          <h6 className="primary" style={{margin:"0em 0em 0em 2em" }}>
-                            {jobAdvertisement.typesOfWork}
+                        <div class="media-body ">
+                          <h6
+                            className="primary"
+                            style={{ margin: "0em 0em 0em 2em" }}
+                          >
+                            {job.typesOfWorkName}
                           </h6>
-                          <span style={{margin:"0em 0em 0em 2em" }} >Çalışma Türü</span>
-                          
+
+                          <span style={{ margin: "0em 0em 0em 2em" }}>
+                            Çalışma Türü
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -209,7 +214,7 @@ export default function JobAdvertisementDetailPage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> ))}
       <section
         class="content-item"
         id="comments"

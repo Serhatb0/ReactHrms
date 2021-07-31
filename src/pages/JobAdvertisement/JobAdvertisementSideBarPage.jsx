@@ -3,12 +3,11 @@ import { Dropdown } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCitites } from "../../redux/actions/cityActions";
 import { getJobPositions } from "../../redux/actions/jobPositionsActions";
+import NumberInput from 'semantic-ui-react-numberinput';
 
 import "./Css/jobAdvertisemenSideBarPage.css";
-export default function JobAdvertisementSideBarPage({
-  handleCity,
-  setFilter
-}) {
+import { data } from "jquery";
+export default function JobAdvertisementSideBarPage({ setFilter ,setMaxSalary,setMinSalary,minSalary,maxSalary,setMin,setMax}) {
   const dispatch = useDispatch();
 
   const cities = useSelector((state) => state.city.cities);
@@ -20,37 +19,54 @@ export default function JobAdvertisementSideBarPage({
 
   const [jobPosition, setJobPosition] = useState([]);
   const [city, setCity] = useState([]);
+  
 
+  
   const { currentValuesCity } = city;
 
   const { currentValues } = jobPosition;
 
   const handleChange = (e, { value }) => {
     setJobPosition({ currentValues: value });
-
   };
   const handleChangeCity = (e, { value }) => {
     setCity({ currentValuesCity: value });
-
   };
+
+  const changeMinSalary = (newValue) => {
+    setMinSalary({ minSalary: newValue });
+}
+
+const changeMaxSalary = (newValue) => {
+  setMaxSalary({ maxSalary: newValue });
+}
+
+
   const jobPositionClik = () => {
-    if(currentValues.length !== 0 || currentValuesCity.length !==0){
-      var selectedjobPositions = currentValues
-      var selectedCity = currentValuesCity
-
+    if (currentValues !== undefined || currentValuesCity !== undefined) {
+      var selectedjobPositions = currentValues;
+      var selectedCity = currentValuesCity;
     }
-    if(currentValues.length === 0 ){
-      var selectedjobPositions =[null]
+    if (currentValues ===undefined) {
+      var selectedjobPositions = [null];
     }
-    if(currentValuesCity.length ===0){
-      var selectedCity =[null]
+    if (currentValuesCity === undefined) {
+      var selectedCity = [null];
+    }
+    if(maxSalary.maxSalary === "0"){
+  setMax(9999999)
+}else{
+  setMax(maxSalary.maxSalary)
+}
+   
+     setMin(parseInt(minSalary.minSalary))
 
-    } 
-
-    setFilter({cityId:[...selectedCity],jobPositionId: [...selectedjobPositions] });
-    
+    setFilter(
+      {
+      cityId: [...selectedCity],
+      jobPositionId: [...selectedjobPositions]
+    });
   };
-
 
   return (
     <div>
@@ -78,29 +94,28 @@ export default function JobAdvertisementSideBarPage({
               </header>
               <div class="filter-content collapse" id="collapse_aside1">
                 <div class="card-body ">
-                <Dropdown
-                      style={{ maxHeight: "7rem" }}
-                      options={cities.map((city) => {
-                        return {
-                          text: city.cityName,
-                          key: city.cityId,
-                          value: city.cityId,
-                        };
-                      })}
-                      placeholder="Şehirler"
-                      search
-                      selection
-                      fluid
-                      multiple
-                      onChange={handleChangeCity}
-                    />
+                  <Dropdown
+                    style={{ maxHeight: "7rem" }}
+                    options={cities.map((city) => {
+                      return {
+                        text: city.cityName,
+                        key: city.cityId,
+                        value: city.cityId,
+                      };
+                    })}
+                    placeholder="Şehirler"
+                    search
+                    selection
+                    fluid
+                    multiple
+                    onChange={handleChangeCity}
+                  />
                   <a
                     style={{ margin: "1em 0em 0em 0em" }}
                     href
                     class="highlight-button btn btn-medium button xs-margin-bottom-five"
                     data-abc="true"
-                     onClick={jobPositionClik}
-
+                    onClick={jobPositionClik}
                   >
                     Uygula
                   </a>
@@ -125,38 +140,25 @@ export default function JobAdvertisementSideBarPage({
               </header>
               <div class="filter-content collapse" id="collapse_aside2">
                 <div class="card-body">
-                  {" "}
-                  <input
-                    type="range"
-                    class="custom-range"
-                    min="0"
-                    max="100"
-                    name=""
-                  />
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
+                  
+                  <div class="form-row" >
+                    <div class="form-group col-md-6" >
                       {" "}
                       <label>Min</label>{" "}
-                      <input
-                        class="form-control"
-                        placeholder="$0"
-                        type="number"
-                      />{" "}
+                      <NumberInput value={minSalary.minSalary} onChange={changeMinSalary} />
                     </div>
-                    <div class="form-group text-right col-md-6">
+                    <div class="form-group" style={{marginLeft:"0.4em"}}>
                       {" "}
                       <label>Max</label>{" "}
-                      <input
-                        class="form-control"
-                        placeholder="$1,0000"
-                        type="number"
-                      />{" "}
+                      <NumberInput value={maxSalary.maxSalary} onChange={changeMaxSalary} />
                     </div>
+                    
                   </div>{" "}
                   <a
                     href
                     class="highlight-button btn btn-medium button xs-margin-bottom-five"
                     data-abc="true"
+                    onClick={jobPositionClik}
                   >
                     Uygula
                   </a>
@@ -186,7 +188,7 @@ export default function JobAdvertisementSideBarPage({
                     <Dropdown
                       id="jobPositions"
                       style={{ maxHeight: "7rem" }}
-                      options={jobPositions.map((job,) => {
+                      options={jobPositions.map((job) => {
                         return {
                           text: job.positionName,
                           key: job.id,
@@ -208,7 +210,6 @@ export default function JobAdvertisementSideBarPage({
                   class="highlight-button btn btn-medium button xs-margin-bottom-five"
                   data-abc="true"
                   onClick={jobPositionClik}
-
                 >
                   Uygula
                 </a>
