@@ -8,4 +8,16 @@ export default class EducationService{
     getAllById(id){
         return http.get(`/Educations/getAllById?id=${id}`)
     }
+
+    updateEducation(id,values){
+        return http.put(`/Educations/educationUpdate?id=${id}`,values)
+    }
+    
+    addEducation(values){
+        return http.post(`/Educations/add`,values)
+    }
+
+    DeleteEducation(id){
+        return http.delete(`/Educations/educationDelete?id=${id}`)
+    }
 }

@@ -1,142 +1,112 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
-import education from "../../img/education/indir (1)_770x400.jpg";
 import education1 from "../../img/education/student-education-750x460-1_770x400.jpg";
 import education2 from "../../img/education/images_770x400.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { getEducations } from "../../redux/actions/educationsActions";
 import { getEducationsId } from "../../redux/actions/educationsActions";
-import {  } from "../../redux/services/educationService";
+import { validationSchema } from "./Validation/Education/ResumeEducationValidation";
 import EducationService from "../../redux/services/educationService";
-import { Button, Form } from "semantic-ui-react";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-
+import { Button, Form, Header, Icon, Label, Modal } from "semantic-ui-react";
+import { Formik, useFormik } from "formik";
+import { EducationAdd } from "./Validation/Education/ResumeEducationAdd";
+import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
 function ResumeEducationPage() {
-  const [selectedEducationId, setSelectedEducationId] = useState();
-
+  var educationService = new EducationService();
   const dispatch = useDispatch();
-
   const educations = useSelector((state) => state.educations.educations);
-  // const education = useSelector((state) => state.educationsId.educationsId);
-  const [education, setEducation] = useState([])
+  const education = useSelector((state) => state.educationsId.educationsId);
+  const [open, setOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [selectedEducationId, setSelectedEducationId] = useState(11);
   useEffect(() => {
     dispatch(getEducations(13));
-  }, []);
-
-  useEffect(() => {
-    // dispatch(getEducationsId(selectedEducationId));
-    const educationService = new EducationService();
-
-    educationService.getAllById(selectedEducationId)
-    .then(result =>setEducation(result.data.data))
-    
+    dispatch(getEducationsId(selectedEducationId));
   }, [selectedEducationId]);
 
-  console.log(education);
-  console.log(selectedEducationId);
+  if (refresh === true) {
+    dispatch(getEducations(13));
+    setTimeout(() => {
+      setRefresh(false);
+    }, 200);
+  }
 
-  var initialValues = {
+  const initialValues = {
     schoolName: education.schoolName,
     episode: education.episode,
     startOfSchool: education.startOfSchool,
     graduationYear: education.graduationYear,
   };
-
-   const validationSchema = Yup.object({
-    schoolName: Yup.string().required("Zorunlu Alan"),
-    episode: Yup.string().required("Web Adres Zorunlu"),
-    startOfSchool: Yup.string().required("Zorunlu Alan"),
-    graduationYear: Yup.string().required("Zorunlu Alan"),
-
-  });
-  
   const Education = () => {
-    const { handleSubmit, handleChange, values, errors, touched } = useFormik({
-      initialValues:initialValues,
-      validationSchema,
-      onSubmit: (values) => {
-       console.log(values);
-      },
-    });
-
     return (
-        <div id="EducationUpdateModal" className="modal fade">
-          <div className="modal-dialog">
-            <div className="modal-content">
-         
-                <div className="modal-header">
-                  <h4 className="modal-title">Eğitim Bilgileri</h4>
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                  >
-                    ×
-                  </button>
-                </div>
-                <div className="modal-body"></div>
-                <div className="container">
+      <Modal
+        dimmer={"blurring"}
+        centered={true}
+        size={"mini"}
+        style={{
+          height: "auto",
+          top: "auto",
+          left: "auto",
+          bottom: "auto",
+          right: "auto",
+        }}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        open={open}
+      >
+        <Modal.Header>Eğitim Bilgileri</Modal.Header>
+        <Modal.Content image>
+          <Modal.Description>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={(values) => {
+                // registerEmployerSerivce.postRegisterEmployer(fields);
+
+                console.log(values);
+                console.log("serhat");
+              }}
+            >
+              {({ handleSubmit }) => (
                 <Form onSubmit={handleSubmit}>
-
-                  <form>
-
-                    <label htmlFor="scholl">Okul Adı</label>
-
-                    <Form.Input
-                      id="scholl"
-                      value={values.schoolName}
-                      placeholder="SchollName"
-                      name="schollName"
-                      onChange={handleChange}
-                      values={values.schoolName}
-                    />
-                  <label htmlFor="episode">Bölum</label>
-                  <Form.Input
-                    id="episode"
-                    value={values.episode}
-                    placeholder="episode"
+                  <BiricikTextInput
+                    name="schoolName"
+                    placeholder="Şirket Adı"
+                  ></BiricikTextInput>
+                  <BiricikTextInput
                     name="episode"
-                    onChange={handleChange}
-                    values={values.episode}
-                  />
-                  <label htmlFor="startOfSchool">Okul Başlangıç Tarihi</label>
-                  <Form.Input
-                    id="startOfSchool"
-                    value={values.startOfSchool}
-                    placeholder="startOfSchool"
+                    placeholder="Bolüm"
+                  ></BiricikTextInput>
+                  <BiricikTextInput
                     name="startOfSchool"
-                    onChange={handleChange}
-                    values={values.startOfSchool}
-                  />
-                  <label htmlFor="graduationYear">Mezuniyet Tarihi</label>
-                  <Form.Input
-                    id="graduationYear"
-                    value={values.graduationYear}
-                    placeholder="graduationYear"
+                    placeholder="Okul Başlangıç Tarihi"
+                  ></BiricikTextInput>
+                  <BiricikTextInput
                     name="graduationYear"
-                    onChange={handleChange}
-                    values={values.graduationYear}
-                  />
-                   </form>
-            </Form>
-                </div>
-             
-              <div className="modal-footer">
-                <input
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                  defaultValue="Cancel"
-                />
-                <Button type="submit" color="teal" fluid size="large">
-                  Güncelle
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+                    placeholder="Mezuniyet Tarihi"
+                  ></BiricikTextInput>
+                  <Modal.Actions>
+                    <Button color="black" onClick={() => setOpen(false)}>
+                      İptal
+                    </Button>
+                    <Button
+                      content="Güncelle"
+                      labelPosition="right"
+                      icon="checkmark"
+                      type="submit"
+                      positive
+                    />
+                  </Modal.Actions>
+                </Form>
+              )}
+            </Formik>
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
     );
   };
 
@@ -156,8 +126,9 @@ function ResumeEducationPage() {
                   <div className="row">
                     {educations.map((education) => (
                       <div
+                        id="edu"
                         key={education.id}
-                        className="col-10"
+                        className="col-10 edu"
                         style={{ marginBottom: "0.5em" }}
                       >
                         <div className="card  p-3 m-0">
@@ -183,33 +154,30 @@ function ResumeEducationPage() {
                                 {education.episode}
                               </p>
                             </div>
-                            <div>
+                            <div
+                              onClick={() =>
+                                setSelectedEducationId(education.id)
+                              }
+                            >
                               <i
-                                href="#EducationUpdateModal"
-                                data-toggle="modal"
                                 className="bi bi-pencil fa-2x delete edit-add "
                                 style={{
-                                  margin: "0em 0em 0em 6.8em",
+                                  margin: "0em 0em 0em 9.5em",
                                   width: "40px",
                                   height: "40px",
                                 }}
-                                onClick={()=> setSelectedEducationId(education.id)}
+                                onClick={() => setOpen(true)}
                               ></i>
 
-                              <a
-                                href="#EducationRemoveModal"
-                                className="delete edit-remove"
-                                data-toggle="modal"
-                              >
-                                <i
-                                  className="bi bi-eraser fa-2x "
-                                  style={{
-                                    margin: "0em 0em 0em 6.8em",
-                                    width: "40px",
-                                    height: "40px",
-                                  }}
-                                ></i>
-                              </a>
+                              <i
+                                onClick={() => setDeleteOpen(true)}
+                                className="bi bi-eraser fa-2x edit-remove "
+                                style={{
+                                  margin: "0em 0em 0em 9.5em",
+                                  width: "40px",
+                                  height: "40px",
+                                }}
+                              ></i>
                             </div>
                           </div>
                         </div>
@@ -218,7 +186,11 @@ function ResumeEducationPage() {
                   </div>
 
                   <br />
-                  <button type="button" class="btn btn-outline-success">
+                  <button
+                    onClick={() => setAddOpen(true)}
+                    type="button"
+                    class="btn btn-outline-success"
+                  >
                     Yeni Eğitim Bilgisi
                   </button>
                 </div>
@@ -238,15 +210,12 @@ function ResumeEducationPage() {
                       className="active"
                     />
                     <li data-target="#CarouselTest" data-slide-to={1} />
-                    <li data-target="#CarouselTest" data-slide-to={2} />
                   </ol>
                   <div className="carousel-inner mt-5">
                     <div className="carousel-item active">
-                      <img className="d-block" src={education} alt />
-                    </div>
-                    <div className="carousel-item">
                       <img className="d-block" src={education1} alt />
                     </div>
+
                     <div className="carousel-item">
                       <img className="d-block" src={education2} alt />
                     </div>
@@ -319,9 +288,55 @@ function ResumeEducationPage() {
           </div>
         </div>
       </div>
+      <Modal
+        style={{
+          height: "auto",
+          top: "auto",
+          left: "auto",
+          bottom: "auto",
+          right: "auto",
+        }}
+        basic
+        onClose={() => setDeleteOpen(false)}
+        onOpen={() => setDeleteOpen(true)}
+        open={deleteOpen}
+        size="small"
+      >
+        <Header icon>
+          <Icon name="archive" />
+          {education.schoolName}
+        </Header>
+        <Modal.Content>
+          <p>Eğitim Bilgisini Silemek İstediginize Emin Misiniz?</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            basic
+            color="red"
+            inverted
+            onClick={() => setDeleteOpen(false)}
+          >
+            <Icon name="remove" /> Hayır
+          </Button>
+          <a onClick={() => educationService.DeleteEducation(education.id)}>
+            <a onClick={() => setRefresh(true)}>
+              <Button
+                color="green"
+                inverted
+                onClick={() => setDeleteOpen(false)}
+              >
+                <Icon name="checkmark" /> Evet
+              </Button>
+            </a>
+          </a>
+        </Modal.Actions>
+      </Modal>
       <Education></Education>
-      
-      
+      <EducationAdd
+        addOpen={addOpen}
+        setRefresh={setRefresh}
+        setAddOpen={setAddOpen}
+      ></EducationAdd>
     </div>
   );
 }
