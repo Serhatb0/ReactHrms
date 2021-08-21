@@ -5,35 +5,36 @@ import React, { useEffect, useState } from "react";
 import education1 from "../../img/education/student-education-750x460-1_770x400.jpg";
 import education2 from "../../img/education/images_770x400.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { getEducations } from "../../redux/actions/educationsActions";
-import { getEducationsId } from "../../redux/actions/educationsActions";
 import { validationSchema } from "./Validation/Education/ResumeEducationValidation";
 import EducationService from "../../redux/services/educationService";
-import { Button, Form, Header, Icon, Label, Modal } from "semantic-ui-react";
-import { Formik, useFormik } from "formik";
+import { Button, Form, Header, Icon,  Modal } from "semantic-ui-react";
+import { Formik } from "formik";
 import { EducationAdd } from "./Validation/Education/ResumeEducationAdd";
+import { educationSelector} from "../../redux/educations/educationsSlice";
+import { fetchEducation,updateEducationAsync,deleteEducationAsync} from "../../redux/educations/services";
+
+
+
 import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
 function ResumeEducationPage() {
   var educationService = new EducationService();
   const dispatch = useDispatch();
-  const educations = useSelector((state) => state.educations.educations);
-  const education = useSelector((state) => state.educationsId.educationsId);
+  const [education, setEducation] = useState([])
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [selectedEducationId, setSelectedEducationId] = useState(11);
-  useEffect(() => {
-    dispatch(getEducations(13));
-    dispatch(getEducationsId(selectedEducationId));
-  }, [selectedEducationId]);
+  const [selectedEducationId, setSelectedEducationId] = useState();
 
-  if (refresh === true) {
-    dispatch(getEducations(13));
-    setTimeout(() => {
-      setRefresh(false);
-    }, 200);
-  }
+  const educations = useSelector(educationSelector.selectAll)
+  const status = useSelector(state => state.education.status)
+
+  useEffect(() => {
+   if(status === 'idle'){
+     dispatch(fetchEducation(13));
+ 
+   }
+  }, [dispatch,status])
+
 
   const initialValues = {
     schoolName: education.schoolName,
@@ -64,15 +65,13 @@ function ResumeEducationPage() {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => {
-                // registerEmployerSerivce.postRegisterEmployer(fields);
-
-                console.log(values);
-                console.log("serhat");
+              onSubmit={async (values) => {
+                await dispatch(updateEducationAsync({selectedEducationId,values}))
+                setOpen(false);
               }}
             >
               {({ handleSubmit }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form  onSubmit={handleSubmit}>
                   <BiricikTextInput
                     name="schoolName"
                     placeholder="Şirket Adı"
@@ -115,7 +114,7 @@ function ResumeEducationPage() {
       <section>
         <div className="container py-3">
           <div className="title h1 text-center">
-            Horizontal cards - Bootstrap 4
+            ÖZ GEÇMİŞİM
           </div>
           {/* Card Start */}
           <div className="card">
@@ -156,10 +155,10 @@ function ResumeEducationPage() {
                             </div>
                             <div
                               onClick={() =>
-                                setSelectedEducationId(education.id)
+                                setEducation(educations.find(item => item.id === education.id))
                               }
                             >
-                              <i
+                              <a onClick={()=> setSelectedEducationId(education.id)}>                             <i
                                 className="bi bi-pencil fa-2x delete edit-add "
                                 style={{
                                   margin: "0em 0em 0em 9.5em",
@@ -167,7 +166,8 @@ function ResumeEducationPage() {
                                   height: "40px",
                                 }}
                                 onClick={() => setOpen(true)}
-                              ></i>
+                              ></i></a>
+ 
 
                               <i
                                 onClick={() => setDeleteOpen(true)}
@@ -318,8 +318,8 @@ function ResumeEducationPage() {
           >
             <Icon name="remove" /> Hayır
           </Button>
-          <a onClick={() => educationService.DeleteEducation(education.id)}>
-            <a onClick={() => setRefresh(true)}>
+          <a onClick={async () => await dispatch(deleteEducationAsync(education.id))}>
+           
               <Button
                 color="green"
                 inverted
@@ -327,14 +327,14 @@ function ResumeEducationPage() {
               >
                 <Icon name="checkmark" /> Evet
               </Button>
-            </a>
+           
           </a>
         </Modal.Actions>
       </Modal>
       <Education></Education>
       <EducationAdd
         addOpen={addOpen}
-        setRefresh={setRefresh}
+  
         setAddOpen={setAddOpen}
       ></EducationAdd>
     </div>

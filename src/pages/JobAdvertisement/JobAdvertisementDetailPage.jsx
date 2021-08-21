@@ -1,23 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {  useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, {  useEffect, useState } from "react";
+import {  useParams } from "react-router-dom";
 import "./Css/JobAdvertisementDetailPage.css";
 import { Button } from "semantic-ui-react";
-
-import { useDispatch, useSelector } from "react-redux";
-import { getJobPostingsId } from "../../redux/actions/jobPostingsActions";
+import axios from "axios";
 export default function JobAdvertisementDetailPage() {
   let { id } = useParams();
-
-  const jobById = useSelector((state) => state.jobPostingsGetId.jobPostingsId);
-  
-  const dispatch = useDispatch();
+  const [jobById, setJobById] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
-    dispatch(getJobPostingsId(id));
+   axios(`${process.env.REACT_APP_API_BASE_ENDPOINT}/JobPostings/getAllByjobPostingsId?jobPostingsId=${id}`)
+   .then(res => setJobById(res.data.data))
+   .finally(()=> setLoading(false))
+  }, [id])
 
-    
-  }, []);
- 
   return (
     <div>
       <link
@@ -49,7 +45,7 @@ export default function JobAdvertisementDetailPage() {
         href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
         rel="stylesheet"
       ></link>
-      {jobById.map((job)=>(
+
 
      
       <div
@@ -70,9 +66,9 @@ export default function JobAdvertisementDetailPage() {
                   />
                 </a>
 
-                <h1>{job.companyName}</h1>
+                <h1>{jobById.companyName}</h1>
 
-                <p>{job.webAddress}</p>
+                <p>{jobById.webAddress}</p>
 
                 <div>
                   <Button circular color="facebook" icon="facebook" />
@@ -93,7 +89,7 @@ export default function JobAdvertisementDetailPage() {
           <div class="profile-info col-md-9">
             <div class="panel" style={{ marginTop: "2em" }}>
               <div class="bio-graph-heading" style={{ background: "#0a1931" }}>
-                {job.jobDescription}
+                {jobById.jobDescription}
               </div>
 
               <div className="" style={{ marginLeft: "0em" }}>
@@ -110,7 +106,7 @@ export default function JobAdvertisementDetailPage() {
                     <div class="card-body">
                       <div class="media d-flex">
                         <div class="media-body text-left">
-                          <h3 class="success">{job.numberOfOpenPositions}</h3>
+                          <h3 class="success">{jobById.numberOfOpenPositions}</h3>
 
                           <span>Açık Pozisyon Adedi</span>
                         </div>
@@ -136,7 +132,7 @@ export default function JobAdvertisementDetailPage() {
                       <div class="media align-items-stretch">
                         <div class="">
                           <h5 class="mr-2 success">
-                            ${job.minSalary} -{job.maxSalary}
+                            ${jobById.minSalary} -{jobById.maxSalary}
                           </h5>
                         </div>
                         <div class="media-body">
@@ -164,11 +160,11 @@ export default function JobAdvertisementDetailPage() {
                     <div class="card-body">
                       <div class="media d-flex" style={{ marginBottom: "4em" }}>
                         <div class="media-body " style={{ marginRight: "1em" }}>
-                          <h5 class="danger">{job.cityName}</h5>
+                          <h5 class="danger">{jobById.cityName}</h5>
                           <span>Konum</span>
                         </div>
                         <div class="media-body ">
-                          <h5 class="danger">{job.applicationDeadline}</h5>
+                          <h5 class="danger">{jobById.applicationDeadline}</h5>
 
                           <span>Son Başvuru Tarihi</span>
                         </div>
@@ -190,7 +186,7 @@ export default function JobAdvertisementDetailPage() {
                     <div class="card-body">
                       <div class="media d-flex">
                         <div class="media-body text-right">
-                          <h5 className="primary">{job.positionName}</h5>
+                          <h5 className="primary">{jobById.positionName}</h5>
 
                           <span>Çalışma Pozisyonu</span>
                         </div>
@@ -199,7 +195,7 @@ export default function JobAdvertisementDetailPage() {
                             className="primary"
                             style={{ margin: "0em 0em 0em 2em" }}
                           >
-                            {job.typesOfWorkName}
+                            {jobById.typesOfWorkName}
                           </h6>
 
                           <span style={{ margin: "0em 0em 0em 2em" }}>
@@ -214,7 +210,7 @@ export default function JobAdvertisementDetailPage() {
             </div>
           </div>
         </div>
-      </div> ))}
+      </div>
       <section
         class="content-item"
         id="comments"

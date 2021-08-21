@@ -2,26 +2,27 @@
 import { useFormik } from "formik";
 import { Button, Form, Label, Modal } from "semantic-ui-react";
 import { validationSchema } from "./ResumeEducationValidation";
-import EducationService from "../../../../redux/services/educationService";
+import { addEducationAsync } from "../../../../redux/educations/services";
+import { useDispatch } from "react-redux";
 
-var educationService = new EducationService();
-const initialValues = {
+let initialValues = {
   episode: "",
   graduationYear: "",
-
   id: "13",
   schoolName: "",
   schoolStatus: true,
-
   startOfSchool: "",
 };
 
-export const EducationAdd = ({ setAddOpen, addOpen ,setRefresh}) => {
+export const EducationAdd = ({ setAddOpen, addOpen }) => {
+  const dispatch = useDispatch();
   const { handleSubmit, handleChange, values, errors, touched } = useFormik({
     initialValues: initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      educationService.addEducation(values);
+    onSubmit: async (values) => {
+      await dispatch(addEducationAsync(values));
+      setAddOpen(false);
+     
     },
   });
 
@@ -97,22 +98,18 @@ export const EducationAdd = ({ setAddOpen, addOpen ,setRefresh}) => {
                 {errors.graduationYear}
               </Label>
             ) : null}
-            <Modal.Actions
-              
-            >
+            <Modal.Actions>
               <Button color="black" onClick={() => setAddOpen(false)}>
                 İptal
               </Button>
-              <a onClick={()=>setRefresh(true)}  >
+
               <Button
-            
                 content="Kaydet"
                 labelPosition="right"
                 icon="checkmark"
                 type="submit"
                 positive
               />
-              </a>
             </Modal.Actions>
           </Form>
         </Modal.Description>

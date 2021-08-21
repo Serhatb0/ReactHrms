@@ -14,9 +14,8 @@ import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'jquery/dist/jquery.slim.min.js';
 
 import {Provider  } from "react-redux";
-import configureStore from "./redux/configureStore";
+import {store} from "./redux/store";
 
-const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>

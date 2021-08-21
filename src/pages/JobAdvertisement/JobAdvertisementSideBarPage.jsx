@@ -1,27 +1,44 @@
+/* eslint-disable no-redeclare */
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
-import { getCitites } from "../../redux/actions/cityActions";
-import { getJobPositions } from "../../redux/actions/jobPositionsActions";
-import NumberInput from 'semantic-ui-react-numberinput';
+import NumberInput from "semantic-ui-react-numberinput";
+import { fetchCity } from "../../redux/Cities/services";
+import { citySelector } from "../../redux/Cities/citySlice";
+import { jobPositionSelector } from "../../redux/jobPositions/jobPositionSlice";
+import { fetchJobPosition } from "../../redux/jobPositions/services";
 
 import "./Css/jobAdvertisemenSideBarPage.css";
-import { data } from "jquery";
-export default function JobAdvertisementSideBarPage({ setFilter ,setMaxSalary,setMinSalary,minSalary,maxSalary,setMin,setMax}) {
+import { statusChange } from "../../redux/jobPostings/jobPostingsSlice";
+export default function JobAdvertisementSideBarPage({
+  setFilter,
+  setMaxSalary,
+  setMinSalary,
+  minSalary,
+  maxSalary,
+  setMin,
+  setMax,
+}) {
   const dispatch = useDispatch();
-
-  const cities = useSelector((state) => state.city.cities);
-  const jobPositions = useSelector((state) => state.jobPositions.jobPositions);
-  useEffect(() => {
-    dispatch(getCitites());
-    dispatch(getJobPositions());
-  }, []);
 
   const [jobPosition, setJobPosition] = useState([]);
   const [city, setCity] = useState([]);
-  
 
-  
+  const cities = useSelector(citySelector.selectAll);
+  const jobPositions = useSelector(jobPositionSelector.selectAll);
+
+  const status = useSelector((state) => state.city.status);
+  const jobPositionStatus = useSelector((state) => state.jobPosition.status);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchCity());
+    }
+    if (jobPositionStatus === "idle") {
+      dispatch(fetchJobPosition());
+    }
+  }, [dispatch, status, jobPositionStatus]);
+
   const { currentValuesCity } = city;
 
   const { currentValues } = jobPosition;
@@ -35,38 +52,47 @@ export default function JobAdvertisementSideBarPage({ setFilter ,setMaxSalary,se
 
   const changeMinSalary = (newValue) => {
     setMinSalary({ minSalary: newValue });
-}
+  };
 
-const changeMaxSalary = (newValue) => {
-  setMaxSalary({ maxSalary: newValue });
-}
-
+  const changeMaxSalary = (newValue) => {
+    setMaxSalary({ maxSalary: newValue });
+  };
 
   const jobPositionClik = () => {
+    dispatch(statusChange());
     if (currentValues !== undefined || currentValuesCity !== undefined) {
       var selectedjobPositions = currentValues;
       var selectedCity = currentValuesCity;
     }
-    if (currentValues ===undefined) {
+    if (currentValues === undefined) {
       var selectedjobPositions = [null];
+    } else {
+      if (currentValues.length === 0) {
+        var selectedjobPositions = [null];
+      }
     }
     if (currentValuesCity === undefined) {
       var selectedCity = [null];
+    } else {
+      if (currentValuesCity.length === 0) {
+        var selectedCity = [null];
+      }
     }
-    if(maxSalary.maxSalary === "0"){
-  setMax(9999999)
-}else{
-  setMax(maxSalary.maxSalary)
-}
-   
-     setMin(parseInt(minSalary.minSalary))
 
-    setFilter(
-      {
+    if (maxSalary.maxSalary === "0") {
+      setMax(9999999);
+    } else {
+      setMax(maxSalary.maxSalary);
+    }
+
+    setMin(parseInt(minSalary.minSalary));
+
+    setFilter({
       cityId: [...selectedCity],
-      jobPositionId: [...selectedjobPositions]
+      jobPositionId: [...selectedjobPositions],
     });
   };
+  console.log(currentValues);
 
   return (
     <div>
@@ -99,8 +125,8 @@ const changeMaxSalary = (newValue) => {
                     options={cities.map((city) => {
                       return {
                         text: city.cityName,
-                        key: city.cityId,
-                        value: city.cityId,
+                        key: city.id,
+                        value: city.id,
                       };
                     })}
                     placeholder="Şehirler"
@@ -140,19 +166,23 @@ const changeMaxSalary = (newValue) => {
               </header>
               <div class="filter-content collapse" id="collapse_aside2">
                 <div class="card-body">
-                  
-                  <div class="form-row" >
-                    <div class="form-group col-md-6" >
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
                       {" "}
                       <label>Min</label>{" "}
-                      <NumberInput value={minSalary.minSalary} onChange={changeMinSalary} />
+                      <NumberInput
+                        value={minSalary.minSalary}
+                        onChange={changeMinSalary}
+                      />
                     </div>
-                    <div class="form-group" style={{marginLeft:"0.4em"}}>
+                    <div class="form-group" style={{ marginLeft: "0.4em" }}>
                       {" "}
                       <label>Max</label>{" "}
-                      <NumberInput value={maxSalary.maxSalary} onChange={changeMaxSalary} />
+                      <NumberInput
+                        value={maxSalary.maxSalary}
+                        onChange={changeMaxSalary}
+                      />
                     </div>
-                    
                   </div>{" "}
                   <a
                     href

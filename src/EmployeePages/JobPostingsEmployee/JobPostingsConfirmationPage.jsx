@@ -1,21 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import "./css/JobPostingsConfirmationPage.css";
-import {getAllByPageIsNull} from "../../redux/actions/employeeJobPostingsActions";
 import { Pagination } from "semantic-ui-react";
 export default function JobPostingsConfirmationPage() {
 
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
-
-  const employeeJobPostings = useSelector(state => state.employeeJobPostingsIsActive.employeeJobPostingsIsNull)
+  const [employeeJobPostings, setemployeeJobPostings] = useState([])
   const dispatch = useDispatch()
 
-  useEffect(() => {
-
-    dispatch(getAllByPageIsNull(activePage,pageSize))
-  }, [activePage,pageSize,dispatch])
 
 
   const handleSelectedPage = (e, { activePage }) => {

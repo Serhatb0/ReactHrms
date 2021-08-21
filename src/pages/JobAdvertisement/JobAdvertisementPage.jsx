@@ -6,43 +6,36 @@ import "./Css/JobAdvertisementPage.css";
 import { Grid, Pagination } from "semantic-ui-react";
 import JobAdvertisementSideBarPage from "./JobAdvertisementSideBarPage";
 import { Link } from "react-router-dom";
-import {
-  getJobPostingsByPageFilter,
-  getJobPostingsByPageFilterLenght,
-} from "../../redux/actions/jobPostingsActions";
+import { fetchJobPostings } from "../../redux/jobPostings/services";
+import { jobPostingSelector } from "../../redux/jobPostings/jobPostingsSlice";
+import { statusChange } from "../../redux/jobPostings/jobPostingsSlice";
+
 export default function JobAdvertisementPage() {
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
   const [filter, setFilter] = useState({});
-  const [minSalary, setMinSalary] = useState({  minSalary: "0"})
-  const [maxSalary, setMaxSalary] = useState({  maxSalary: "0"})
-  const [max, setMax] = useState(99999)
-  const [min, setMin] = useState(0)
-
-  const jobPostingspageFilter = useSelector(
-    (state) => state.jobPostingspageFilter.jobPostingsPageFilter
-  );
-
-  const jobPostingspageFilterLenght = useSelector(
-    (state) => state.jobPostingsPageFilterLenght.jobPostingsPageFilterLenght
-  );
-
+  const [minSalary, setMinSalary] = useState({ minSalary: "0" });
+  const [maxSalary, setMaxSalary] = useState({ maxSalary: "0" });
+  const [max, setMax] = useState(99999);
+  const [min, setMin] = useState(0);
 
   const dispatch = useDispatch();
+
+  const jobPostingspageFilter = useSelector(jobPostingSelector.selectAll);
+  const total = useSelector((state) => state.jobPostings.total);
+  const status = useSelector((state) => state.jobPostings.status);
+
+
   useEffect(() => {
-   
-
-    dispatch(getJobPostingsByPageFilter(max,min,activePage, pageSize, filter,));
-    dispatch(getJobPostingsByPageFilterLenght(max,min,activePage, pageSize, filter ));
-  }, [filter, activePage, pageSize,]);
-
-  
+    if (status === "idle") {
+      dispatch(fetchJobPostings({ max, min, activePage, pageSize, filter }));
+    }
+  }, [dispatch, filter, activePage]);
 
   const handleSelectedPage = (e, { activePage }) => {
+    dispatch(statusChange())
     setActivePage(activePage);
   };
- 
- 
 
   return (
     <div>
@@ -52,7 +45,7 @@ export default function JobAdvertisementPage() {
             <JobAdvertisementSideBarPage
               setFilter={setFilter}
               setMaxSalary={setMaxSalary}
-              setMinSalary = {setMinSalary}
+              setMinSalary={setMinSalary}
               minSalary={minSalary}
               maxSalary={maxSalary}
               setMin={setMin}
@@ -73,7 +66,7 @@ export default function JobAdvertisementPage() {
                                 <div class="col-lg-6">
                                   <div class="records">
                                     Gosterilen: <b>1-{pageSize}</b> of{" "}
-                                    <b>{jobPostingspageFilterLenght}</b> Sonuç
+                                    <b>{total}</b> Sonuç
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -196,7 +189,7 @@ export default function JobAdvertisementPage() {
                                 <table class="table widget-26">
                                   <tbody>
                                     {jobPostingspageFilter.map((job) => (
-                                      <tr key={job.jobPostingsId}>
+                                      <tr key={job.id}>
                                         <td>
                                           <div class="widget-26-job-emp-img">
                                             <img
@@ -209,7 +202,7 @@ export default function JobAdvertisementPage() {
                                           <div class="widget-26-job-title">
                                             <a href>
                                               <Link
-                                                to={`/jobadvertisement/${job.jobPostingsId}`}
+                                                to={`/jobadvertisement/${job.id}`}
                                               >
                                                 {job.companyName}
                                               </Link>
@@ -246,10 +239,7 @@ export default function JobAdvertisementPage() {
                                         <td>
                                           <div class="widget-26-job-category bg-soft-danger">
                                             <i class="indicator bg-danger"></i>
-                                            <span>
-                                              {" "}
-                                              {job.positionName}
-                                            </span>
+                                            <span> {job.positionName}</span>
                                           </div>
                                         </td>
                                         <td>
@@ -273,9 +263,7 @@ export default function JobAdvertisementPage() {
                         lastItem={null}
                         activePage={activePage}
                         onPageChange={handleSelectedPage}
-                        totalPages={Math.ceil(
-                          parseInt(jobPostingspageFilterLenght) / pageSize
-                        )}
+                        totalPages={Math.ceil(parseInt(total) / pageSize)}
                       />
                     </div>
                   </div>

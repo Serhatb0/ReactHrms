@@ -2,22 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "semantic-ui-react";
-import { getAllByPageIsActive } from "../../redux/actions/employeeJobPostingsActions";
 
 export default function JobPostingsRejectPage() {
   const [activePage, setActivePage] = useState(1);
   const [pageSize] = useState(10);
   const [isActive] = useState(false);
 
-
-  const employeeJobPostings = useSelector(state => state.employeeJobPostingsIsActive.employeeJobPostingsIsActive)
+  const [employeeJobPostings, setemployeeJobPostings] = useState([])
   const dispatch = useDispatch()
 
-  useEffect(() => {
-
-    dispatch(getAllByPageIsActive(activePage,pageSize,isActive))
-  }, [activePage,pageSize,dispatch,isActive])
-
+ 
   const handleSelectedPage = (e, { activePage }) => {
     setActivePage(activePage);
     console.log(activePage);
