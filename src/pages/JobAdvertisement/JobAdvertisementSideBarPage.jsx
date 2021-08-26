@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-redeclare */
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "semantic-ui-react";
@@ -7,6 +8,10 @@ import { fetchCity } from "../../redux/Cities/services";
 import { citySelector } from "../../redux/Cities/citySlice";
 import { jobPositionSelector } from "../../redux/jobPositions/jobPositionSlice";
 import { fetchJobPosition } from "../../redux/jobPositions/services";
+import { fetchTypeOfWork } from "../../redux/typeOfWork/services";
+import { typeOfWorkSelector } from "../../redux/typeOfWork/typeOfWorkSlice";
+
+
 
 import "./Css/jobAdvertisemenSideBarPage.css";
 import { statusChange } from "../../redux/jobPostings/jobPostingsSlice";
@@ -23,12 +28,18 @@ export default function JobAdvertisementSideBarPage({
 
   const [jobPosition, setJobPosition] = useState([]);
   const [city, setCity] = useState([]);
+  const [typesOfWork, setTypesOfWork] = useState([]);
+
 
   const cities = useSelector(citySelector.selectAll);
   const jobPositions = useSelector(jobPositionSelector.selectAll);
+  const typesOfworks = useSelector(typeOfWorkSelector.selectAll);
+
 
   const status = useSelector((state) => state.city.status);
   const jobPositionStatus = useSelector((state) => state.jobPosition.status);
+  const typeOfWorkStatus = useSelector((state) => state.typeOfWork.status);
+
 
   useEffect(() => {
     if (status === "idle") {
@@ -37,9 +48,14 @@ export default function JobAdvertisementSideBarPage({
     if (jobPositionStatus === "idle") {
       dispatch(fetchJobPosition());
     }
-  }, [dispatch, status, jobPositionStatus]);
+    if(typeOfWorkStatus === 'idle'){
+      dispatch(fetchTypeOfWork())
+    }
+  }, [dispatch, status, jobPositionStatus,typeOfWorkStatus]);
 
   const { currentValuesCity } = city;
+  const { currentValuesTypesOfWork } = typesOfWork;
+
 
   const { currentValues } = jobPosition;
 
@@ -48,6 +64,10 @@ export default function JobAdvertisementSideBarPage({
   };
   const handleChangeCity = (e, { value }) => {
     setCity({ currentValuesCity: value });
+  };
+
+  const handleChangeTypesOfWork = (e, { value }) => {
+    setTypesOfWork({ currentValuesTypesOfWork: value });
   };
 
   const changeMinSalary = (newValue) => {
@@ -60,10 +80,14 @@ export default function JobAdvertisementSideBarPage({
 
   const jobPositionClik = () => {
     dispatch(statusChange());
-    if (currentValues !== undefined || currentValuesCity !== undefined) {
+    if (currentValues !== undefined || currentValuesCity !== undefined || currentValuesTypesOfWork !== undefined) {
       var selectedjobPositions = currentValues;
       var selectedCity = currentValuesCity;
+      var selectedTypesOfWork =currentValuesTypesOfWork;
+
     }
+
+    // Position Filter
     if (currentValues === undefined) {
       var selectedjobPositions = [null];
     } else {
@@ -71,6 +95,7 @@ export default function JobAdvertisementSideBarPage({
         var selectedjobPositions = [null];
       }
     }
+    // City Filter
     if (currentValuesCity === undefined) {
       var selectedCity = [null];
     } else {
@@ -78,7 +103,16 @@ export default function JobAdvertisementSideBarPage({
         var selectedCity = [null];
       }
     }
+    // TypeOfWork Filter
+    if (currentValuesTypesOfWork === undefined) {
+      var selectedTypesOfWork = [null];
+    } else {
+      if (currentValuesTypesOfWork.length === 0) {
+        var selectedTypesOfWork = [null];
+      }
+    }
 
+    // Salary Filter
     if (maxSalary.maxSalary === "0") {
       setMax(9999999);
     } else {
@@ -90,9 +124,9 @@ export default function JobAdvertisementSideBarPage({
     setFilter({
       cityId: [...selectedCity],
       jobPositionId: [...selectedjobPositions],
+      typesOfWorkId:[...selectedTypesOfWork]
     });
   };
-  console.log(currentValues);
 
   return (
     <div>
@@ -258,7 +292,7 @@ export default function JobAdvertisementSideBarPage({
                 >
                   {" "}
                   <i class="icon-control fa fa-chevron-down"></i>
-                  <h6 class="title">Tarih </h6>
+                  <h6 class="title">Çalışma Türü</h6>
                 </a>{" "}
               </header>
               <div
@@ -266,50 +300,33 @@ export default function JobAdvertisementSideBarPage({
                 id="collapse_aside4"
               >
                 <div class="card-body">
-                  {" "}
-                  <label class="custom-control">
+                <div className="">
                     {" "}
-                    <input
-                      type="radio"
-                      name="flexRadioDefault"
-                      class="custom-control-input  "
+                    <Dropdown
+                      id="jobPositions"
+                      style={{ maxHeight: "7rem" }}
+                      options={typesOfworks.map((typeOfWork) => {
+                        return {
+                          text: typeOfWork.typesOfWorkName,
+                          key: typeOfWork.id,
+                          value: typeOfWork.id,
+                        };
+                      })}
+                      placeholder="Çalışma Türü"
+                      search
+                      selection
+                      fluid
+                      multiple
+                      onChange={handleChangeTypesOfWork}
                     />
-                    <div class="custom-control-label">Tümü </div>
-                  </label>{" "}
-                  <label class="custom-control">
-                    {" "}
-                    <input
-                      id="flexRadioDefault2"
-                      type="radio"
-                      name="flexRadioDefault"
-                      class="custom-control-input form-check-input "
-                    />
-                    <div class="custom-control-label">Bügün İlanları</div>
-                  </label>{" "}
-                  <label class="custom-control">
-                    {" "}
-                    <input
-                      type="radio"
-                      name="flexRadioDefault"
-                      class="custom-control-input form-check-input"
-                    />
-                    <div class="custom-control-label">Son 3 Gün</div>
-                  </label>{" "}
-                  <label class="custom-control">
-                    {" "}
-                    <input
-                      type="radio"
-                      name="flexRadioDefault"
-                      class="custom-control-input form-check-input"
-                    />
-                    <div class="custom-control-label">Son 7 Gün</div>
-                  </label>{" "}
+                  </div>
                 </div>
                 <a
                   style={{ margin: "0em 0em 1em 0em" }}
                   href
                   class="highlight-button btn btn-medium button xs-margin-bottom-five"
                   data-abc="true"
+                  onClick={jobPositionClik}
                 >
                   Uygula
                 </a>

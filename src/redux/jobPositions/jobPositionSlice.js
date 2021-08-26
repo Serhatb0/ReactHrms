@@ -12,7 +12,7 @@ const initialState =jobPositionAdaptor.getInitialState({
 	status : 'idle',
 })
 
-export const jobPosition = createSlice({
+export const jobPositionSlice = createSlice({
 	name:'jobPosition',
 	initialState,
 	reducers:{},
@@ -30,4 +30,4 @@ export const jobPosition = createSlice({
 	}
 })
 
-export default jobPosition.reducer;
+export default jobPositionSlice.reducer;

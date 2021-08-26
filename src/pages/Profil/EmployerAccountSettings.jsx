@@ -1,21 +1,32 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-redeclare */
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { validationSchema } from "./Validation/EmployerAccountValidation";
-import EmployerService from "../../redux/services/employerService";
 import { Form, Label } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchEmployerById,
+  updateEmployerAsync,
+} from "../../redux/employers/services";
+import { employerSelector } from "../../redux/employers/employerSlice";
 function EmployerAccountSettings() {
+  const dispatch = useDispatch();
   const [employer, setEmployer] = useState([]);
-  const employerService = new EmployerService();
-
+  const [id, setId] = useState(3);
+  const employers = useSelector((state) =>
+    employerSelector.selectById(state, 3)
+  );
+  const status = useSelector((state) => state.employer.status);
   useEffect(() => {
-    employerService.getEmployer(3).then((result) => {
-      setEmployer(result.data.data);
-    });
-  
-  }, []);
-
+    if (status === "idle") {
+      dispatch(fetchEmployerById(3));
+    }
+    if (status === "succeeded") {
+      setEmployer(employers);
+    }
+  }, [dispatch, status]);
 
   const localStorageEmployer = JSON.parse(localStorage.getItem(3));
   if (localStorageEmployer !== null) {
@@ -24,8 +35,8 @@ function EmployerAccountSettings() {
     var localStorageCheck = false;
   }
 
-  if(employer.isUpdate === true){
-    localStorage.removeItem(employer.id)
+  if (employer.isUpdate === true) {
+    localStorage.removeItem(employer.id);
   }
 
   if (localStorageCheck === true) {
@@ -47,20 +58,19 @@ function EmployerAccountSettings() {
       initialValues: initialValues,
 
       validationSchema,
-      onSubmit: (values) => {
+      onSubmit: async (values) => {
         if (localStorageCheck === false) {
           localStorage.setItem(employer.id, JSON.stringify(employer));
         }
 
-        employerService.employerUpdate(values.companyName,values.email,values.webAddress,employer.id)
-        window.location.reload();
+        await dispatch(updateEmployerAsync({ id, values }));
       },
     });
 
     return (
       <Form onSubmit={handleSubmit}>
         {localStorageCheck ? (
-          <div class="alert alert-primary" role="alert">
+          <div className="alert alert-primary" role="alert">
             Güncellem İsteginiz Alındı Onaylanınca Sisteme Yansıtılacaktır
           </div>
         ) : null}
@@ -140,9 +150,18 @@ function EmployerAccountSettings() {
                 placeholder="Açıklama"
               />
             </div>
-            <button type="submit" class="btn btn-outline-success">
-              Güncelle
-            </button>
+            {localStorageCheck ? (
+              <button
+                type="submit"
+                className="btn btn-outline-success disabled"
+              >
+                Güncelle
+              </button>
+            ) : (
+              <button type="submit" className="btn btn-outline-success ">
+                Güncelle
+              </button>
+            )}
           </div>
         </div>
       </Form>

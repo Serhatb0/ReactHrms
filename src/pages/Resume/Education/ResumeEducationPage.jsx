@@ -2,22 +2,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
-import education1 from "../../img/education/student-education-750x460-1_770x400.jpg";
-import education2 from "../../img/education/images_770x400.jpg";
+import education1 from "../../../img/education/student-education-750x460-1_770x400.jpg";
+import education2 from "../../../img/education/images_770x400.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { validationSchema } from "./Validation/Education/ResumeEducationValidation";
-import EducationService from "../../redux/services/educationService";
+import { validationSchema } from "./Validation/ResumeEducationValidation";
 import { Button, Form, Header, Icon,  Modal } from "semantic-ui-react";
 import { Formik } from "formik";
-import { EducationAdd } from "./Validation/Education/ResumeEducationAdd";
-import { educationSelector} from "../../redux/educations/educationsSlice";
-import { fetchEducation,updateEducationAsync,deleteEducationAsync} from "../../redux/educations/services";
+import { EducationAdd } from "./ResumeEducationAdd";
+import { educationSelector} from "../../../redux/educations/educationsSlice";
+import { fetchEducation,updateEducationAsync,deleteEducationAsync} from "../../../redux/educations/services";
 
 
 
-import BiricikTextInput from "../../utilities/customFormControls/BiricikTextInput";
+import BiricikTextInput from "../../../utilities/customFormControls/BiricikTextInput";
 function ResumeEducationPage() {
-  var educationService = new EducationService();
   const dispatch = useDispatch();
   const [education, setEducation] = useState([])
   const [open, setOpen] = useState(false);

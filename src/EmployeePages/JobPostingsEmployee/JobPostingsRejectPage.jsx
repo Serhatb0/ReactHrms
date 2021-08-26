@@ -1,23 +1,33 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Pagination } from "semantic-ui-react";
+import { jobPostingSelector } from "../../redux/jobPostings/jobPostingsSlice";
+import { fetchAllJobPostings, JobPostingsStatusChangeAsync } from "../../redux/jobPostings/services";
 
 export default function JobPostingsRejectPage() {
-  const [activePage, setActivePage] = useState(1);
-  const [pageSize] = useState(10);
-  const [isActive] = useState(false);
+  const [id, setId] = useState();
+  const [employerID, setEmployerId] = useState(11);
+  const [jobStatus, setJobStatus] = useState(true);
 
-  const [employeeJobPostings, setemployeeJobPostings] = useState([])
-  const dispatch = useDispatch()
+  const employeeJobPostings = useSelector(jobPostingSelector.selectAll);
+  const status = useSelector(state => state.jobPostings.status);
 
- 
-  const handleSelectedPage = (e, { activePage }) => {
-    setActivePage(activePage);
-    console.log(activePage);
+
+  const filterJobPostings = employeeJobPostings.filter(
+    (item) => item.status === false
+  );
+  const dispatch = useDispatch();
+  const changeStatus = async () => {
+    await dispatch(JobPostingsStatusChangeAsync({ id, employerID, jobStatus }));
   };
 
-
+  
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchAllJobPostings());
+    }
+  }, [dispatch, status]);
   return (
     <div>
       <div>
@@ -33,7 +43,6 @@ export default function JobPostingsRejectPage() {
             <table className="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th></th>
                   <th>Şireket Adı</th>
 
                   <th>Web Adrres</th>
@@ -42,45 +51,35 @@ export default function JobPostingsRejectPage() {
                   <th>Çalışma Türü</th>
                   <th>Konum</th>
                   <th>Max-Min</th>
+                  <th>Onaylam</th>
                 </tr>
               </thead>
               <tbody>
-                {employeeJobPostings.map((job)=>(
-                   <tr>
-                   <td></td>
-                   <td>{job.employer.companyName}</td>
-                   <td>{job.employer.webAddress}</td>
-                   <td>{job.jobPosition.positionName}</td>
-                   <td>{}</td>
-                   <td>{job.city.cityName}</td>
-                   <td>{job.minSalary} - {job.maxSalary}</td>
-                   <td style={{width:"130px"}}>
+                {filterJobPostings.map((job) => (
+                  <tr key={job.id}>
+                    <td>{job.companyName}</td>
+                    <td>{job.webAddress}</td>
+                    <td>{job.positionName}</td>
+                    <td>{job.applicationDeadline}</td>
+                    <td>{job.typesOfWorkName}</td>
+                    <td>{job.cityName}</td>
+                    <td>
+                      {job.minSalary} - {job.maxSalary}
+                    </td>
+                    <td style={{ width: "130px" }}>
                       <a
-                        href="#EmployeeAcceptModal"
+                        href="#EmployeeAcceptModal2"
                         className="edit"
                         data-toggle="modal"
                       >
                         <i
+                          onClick={() => setId(job.id)}
                           className="bi bi-check-circle"
                           data-toggle="tooltip"
                           title="Edit"
-                        >
-                
-                        </i>
+                        ></i>
                       </a>
-                      <a
-                        href="#EmployeeRejectModal"
-                        className="delete"
-                        data-toggle="modal"
-                      >
-                        <i
-                          className="bi bi-x-circle"
-                          data-toggle="tooltip"
-                          title="Delete"
-                        >
-                         
-                        </i>
-                      </a>
+
                       <a
                         href="#eyeEmployeeModal"
                         className="eye"
@@ -90,176 +89,49 @@ export default function JobPostingsRejectPage() {
                           className="bi bi-eye-fill"
                           data-toggle="tooltip"
                           title="eye"
-                        >
-                         
-                        </i>
+                        ></i>
                       </a>
                     </td>
-                 </tr>
+                  </tr>
                 ))}
-                
               </tbody>
             </table>
-            <div className="clearfix">
-              <div className="hint-text">
-                Showing <b>5</b> out of <b>25</b> entries
+          </div>
+        </div>
+
+        <div id="EmployeeAcceptModal2" className="modal fade">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4 className="modal-title">İş İlanı Kabul Edilecek</h4>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  ×
+                </button>
               </div>
-              <Pagination
-                        firstItem={null}
-                        lastItem={null}
-                        activePage={activePage}
-                        onPageChange={handleSelectedPage}
-                        totalPages={5}
-                      />
-            </div>
-          </div>
-        </div>
-        {/* Edit Modal HTML */}
-        <div id="addEmployeeModal" className="modal fade">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <form>
-                <div className="modal-header">
-                  <h4 className="modal-title">Add Employee</h4>
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                  >
-                    ×
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <div className="form-group">
-                    <label>Name</label>
-                    <input type="text" className="form-control" required />
-                  </div>
-                  <div className="form-group">
-                    <label>Email</label>
-                    <input type="email" className="form-control" required />
-                  </div>
-                  <div className="form-group">
-                    <label>Address</label>
-                    <textarea
-                      className="form-control"
-                      required
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Phone</label>
-                    <input type="text" className="form-control" required />
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <input
-                    type="button"
-                    className="btn btn-default"
-                    data-dismiss="modal"
-                    defaultValue="Cancel"
-                  />
-                  <input
-                    type="submit"
-                    className="btn btn-success"
-                    defaultValue="Add"
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        {/* Edit Modal HTML */}
-        <div id="editEmployeeModal" className="modal fade">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <form>
-                <div className="modal-header">
-                  <h4 className="modal-title">Edit Employee</h4>
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                  >
-                    ×
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <div className="form-group">
-                    <label>Name</label>
-                    <input type="text" className="form-control" required />
-                  </div>
-                  <div className="form-group">
-                    <label>Email</label>
-                    <input type="email" className="form-control" required />
-                  </div>
-                  <div className="form-group">
-                    <label>Address</label>
-                    <textarea
-                      className="form-control"
-                      required
-                      defaultValue={""}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Phone</label>
-                    <input type="text" className="form-control" required />
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <input
-                    type="button"
-                    className="btn btn-default"
-                    data-dismiss="modal"
-                    defaultValue="Cancel"
-                  />
-                  <input
-                    type="submit"
-                    className="btn btn-info"
-                    defaultValue="Save"
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        {/* Delete Modal HTML */}
-        <div id="deleteEmployeeModal" className="modal fade">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <form>
-                <div className="modal-header">
-                  <h4 className="modal-title">Delete Employee</h4>
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                  >
-                    ×
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <p>Are you sure you want to delete these Records?</p>
-                  <p className="text-warning">
-                    <small>This action cannot be undone.</small>
-                  </p>
-                </div>
-                <div className="modal-footer">
-                  <input
-                    type="button"
-                    className="btn btn-default"
-                    data-dismiss="modal"
-                    defaultValue="Cancel"
-                  />
-                  <input
-                    type="submit"
-                    className="btn btn-danger"
-                    defaultValue="Delete"
-                  />
-                </div>
-              </form>
+              <div className="modal-body">
+                <label>Onaylıyormusunuz?</label>
+              </div>
+              <div className="modal-footer">
+                <input
+                  type="button"
+                  className="btn btn-danger"
+                  data-dismiss="modal"
+                  defaultValue="İptal Et"
+                />
+                <button
+                  data-dismiss="modal"
+                  onClick={changeStatus}
+                  type="submit"
+                  className="btn btn-success"
+                >
+                  Evet
+                </button>
+              </div>
             </div>
           </div>
         </div>

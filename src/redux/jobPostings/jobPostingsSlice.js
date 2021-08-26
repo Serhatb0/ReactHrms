@@ -1,5 +1,5 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { fetchJobPostings } from "./services";
+import { fetchJobPostings,fetchAllJobPostings ,JobPostingsStatusChangeAsync,addJobPostingAsync} from "./services";
 
 export const jobPostingAdaptor = createEntityAdapter();
 
@@ -20,6 +20,31 @@ export const jobPostingsSlice = createSlice({
     },
   },
   extraReducers: {
+    // add JobPositn
+
+    [addJobPostingAsync.fulfilled]:(state,action)=>{
+      jobPostingAdaptor.addOne(state,action.payload.data)
+    },
+    // Job Postings Status Change
+    [JobPostingsStatusChangeAsync.fulfilled]:(state)=>{
+      state.status = 'idle';
+    },
+
+    // Null JobPostings
+    [fetchAllJobPostings.pending]: (state) => {
+      state.loading = "loading";
+    },
+    [fetchAllJobPostings.fulfilled]: (state, action) => {
+      jobPostingAdaptor.setAll(state, action.payload.data);
+      state.status = "succeeded";
+      state.total = action.payload.message;
+    },
+    [fetchAllJobPostings.rejected]: (state, action) => {
+      state.error = action.error.message;
+    },
+
+    // Get Filter All
+
     [fetchJobPostings.pending]: (state) => {
       state.loading = "loading";
     },

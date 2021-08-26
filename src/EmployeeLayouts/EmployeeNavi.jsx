@@ -6,6 +6,14 @@ import JobPostingsConfirmationPage from "../EmployeePages/JobPostingsEmployee/Jo
 import JobPostingsAcceptPage from "../EmployeePages/JobPostingsEmployee/JobPostingsAcceptPage";
 
 import JobPostingsRejectPage from "../EmployeePages/JobPostingsEmployee/JobPostingsRejectPage";
+import EmployerConfirmationPage from "../EmployeePages/Employer/EmployerConfirmationPage";
+import { Nav } from "react-bootstrap";
+import { NavLink, Switch, Route } from "react-router-dom";
+import EmployerAcceptPage from "../EmployeePages/Employer/EmployerAcceptPage";
+import EmployerRejectPage from "../EmployeePages/Employer/EmployerRejectPage";
+import EmployerUpdateConfirmationPage from "../EmployeePages/Employer/EmployerUpdateConfirmationPage";
+import EmployerUpdateAcceptPage from "../EmployeePages/Employer/EmployerUpdateAcceptPage";
+import EmployerUpdateRejectPage from "../EmployeePages/Employer/EmployerUpdateRejectPage";
 export default function EmployeeNavi() {
   return (
     <div>
@@ -60,43 +68,34 @@ export default function EmployeeNavi() {
             >
               <div className="bg-white py-2 collapse-inner rounded">
                 <h6 className="collapse-header">İş İlanları:</h6>
-                <div class="list-group" id="list-tab" role="tablist">
-                  <a
+                <div className="list-group" id="list-tab" role="tablist">
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/jobPosting/confirmation"
                     className="collapse-item  "
-                    id="list-jopPostingConfimation-list"
-                    data-toggle="list"
-                    href="#list-jopPostingConfimation"
-                    role="tab"
-                    aria-controls="jopPostingConfimation"
+                    style={{ width: "13em" }}
                   >
                     Onay Bekleyen İş İlanları
-                  </a>
-                  <a
-                    id="list-jopPostingAccept-list"
-                    data-toggle="list"
-                    href="#list-jopPostingAccept"
-                    role="tab"
-                    aria-controls="jopPostingAccept"
+                  </Nav.Link>
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/jobPosting/accept"
+                    style={{ width: "13em" }}
                     className="collapse-item"
                   >
                     Kabul Edilen İş İlanları
-                  </a>
-                  <a
+                  </Nav.Link>
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/jobPosting/reject"
                     className="collapse-item"
-                    id="list-jopPostingReject-list"
-                    data-toggle="list"
-                    href="#list-jopPostingReject"
-                    role="tab"
-                    aria-controls="jopPostingReject"
+                    style={{ width: "13em" }}
                   >
                     Reddedilen İş İlanları
-                  </a>
+                  </Nav.Link>
                 </div>
               </div>
             </div>
-          </li>
-          {/* Nav Item - Utilities Collapse Menu */}
-          <li className="nav-item">
             <a
               className="nav-link collapsed"
               href="#"
@@ -106,7 +105,7 @@ export default function EmployeeNavi() {
               aria-controls="collapseUtilities"
             >
               <i className="fas fa-fw fa-wrench" />
-              <span>Utilities</span>
+              <span>İş Verenler</span>
             </a>
             <div
               id="collapseUtilities"
@@ -115,87 +114,67 @@ export default function EmployeeNavi() {
               data-parent="#accordionSidebar"
             >
               <div className="bg-white py-2 collapse-inner rounded">
-                <h6 className="collapse-header">Custom Utilities:</h6>
-                <a className="collapse-item" href="utilities-color.html">
-                  Colors
-                </a>
-                <a className="collapse-item" href="utilities-border.html">
-                  Borders
-                </a>
-                <a className="collapse-item" href="utilities-animation.html">
-                  Animations
-                </a>
-                <a className="collapse-item" href="utilities-other.html">
-                  Other
-                </a>
+                <h6 className="collapse-header">İş Verenler:</h6>
+                <div className="list-group" id="list-tab" role="tablist">
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/employer/confirmation"
+                    className="collapse-item  "
+                    style={{ width: "13em" }}
+                  >
+                    Onay Bekleyen İş Verenler
+                  </Nav.Link>
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/employer/accept"
+                    className="collapse-item  "
+                    style={{ width: "13em" }}
+                  >
+                    Kabul Edilen İş Verenler
+                  </Nav.Link>
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/employer/reject"
+                    className="collapse-item  "
+                    style={{ width: "13em" }}
+                  >
+                    Reddedilen İş Verenler
+                  </Nav.Link>
+                  <hr className="sidebar-divider" />
+
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/employer/updateconfirmation"
+                    className="collapse-item  "
+                    style={{ width: "13em" }}
+                  >
+                    Güncelleme Onayı Bekleyen
+                  </Nav.Link>
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/employer/updateaccept"
+                    className="collapse-item  "
+                    style={{ width: "13em" }}
+                  >
+                    Güncelleme Onayı Kabul Edilen
+                  </Nav.Link>
+                  <Nav.Link
+                    as={NavLink}
+                    to="/admin/employer/updatereject"
+                    className="collapse-item  "
+                    style={{ width: "13em" }}
+                  >
+                    Güncelleme Onayı Reddedilen
+                  </Nav.Link>
+                </div>
               </div>
             </div>
           </li>
+
           {/* Divider */}
           <hr className="sidebar-divider" />
           {/* Heading */}
           <div className="sidebar-heading">Addons</div>
-          {/* Nav Item - Pages Collapse Menu */}
-          <li className="nav-item">
-            <a
-              className="nav-link collapsed"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapsePages"
-              aria-expanded="true"
-              aria-controls="collapsePages"
-            >
-              <i className="fas fa-fw fa-folder" />
-              <span>Pages</span>
-            </a>
-            <div
-              id="collapsePages"
-              className="collapse"
-              aria-labelledby="headingPages"
-              data-parent="#accordionSidebar"
-            >
-              <div className="bg-white py-2 collapse-inner rounded">
-                <h6 className="collapse-header">Login Screens:</h6>
-                <a className="collapse-item" href="login.html">
-                  Login
-                </a>
-                <a className="collapse-item" href="register.html">
-                  Register
-                </a>
-                <a className="collapse-item" href="forgot-password.html">
-                  Forgot Password
-                </a>
-                <div className="collapse-divider" />
-                <h6 className="collapse-header">Other Pages:</h6>
-                <a className="collapse-item" href="404.html">
-                  404 Page
-                </a>
-                <a className="collapse-item" href="blank.html">
-                  Blank Page
-                </a>
-              </div>
-            </div>
-          </li>
-          {/* Nav Item - Charts */}
-          <li className="nav-item">
-            <a className="nav-link" href="charts.html">
-              <i className="fas fa-fw fa-chart-area" />
-              <span>Charts</span>
-            </a>
-          </li>
-          {/* Nav Item - Tables */}
-          <li className="nav-item">
-            <a className="nav-link" href="tables.html">
-              <i className="fas fa-fw fa-table" />
-              <span>Tables</span>
-            </a>
-          </li>
-          {/* Divider */}
-          <hr className="sidebar-divider d-none d-md-block" />
-          {/* Sidebar Toggler (Sidebar) */}
-          <div className="text-center d-none d-md-inline">
-            <button className="rounded-circle border-0" id="sidebarToggle" />
-          </div>
         </ul>
         {/* End of Sidebar */}
         {/* Content Wrapper */}
@@ -513,35 +492,58 @@ export default function EmployeeNavi() {
                 </li>
               </ul>
             </nav>
-            <div class="tab-content col-12" id="nav-tabContent">
-              <div
-                class="tab-pane fade col-12"
-                id="list-jopPostingConfimation"
-                role="tabpanel"
-                aria-labelledby="list-jopPostingConfimation-list"
-              >
-                {" "}
-                <JobPostingsConfirmationPage></JobPostingsConfirmationPage>
-              </div>
-              <div
-                class="tab-pane fade col-12"
-                id="list-jopPostingAccept"
-                role="tabpanel"
-                aria-labelledby="list-jopPostingAccept-list"
-              >
-                {" "}
-                <JobPostingsAcceptPage></JobPostingsAcceptPage>
-              </div>
-              <div
-                class="tab-pane fade col-12"
-                id="list-jopPostingReject"
-                role="tabpanel"
-                aria-labelledby="list-jopPostingReject-list"
-              >
-                {" "}
-                <JobPostingsRejectPage></JobPostingsRejectPage>
-              </div>
-            </div>
+            <Switch>
+              {/* Job Positngs Statatus */}
+              <Route
+                exact
+                path="/admin/jobPosting/confirmation"
+                component={JobPostingsConfirmationPage}
+              />
+
+              <Route
+                exact
+                path="/admin/jobPosting/Accept"
+                component={JobPostingsAcceptPage}
+              />
+
+              <Route
+                exact
+                path="/admin/jobPosting/reject"
+                component={JobPostingsRejectPage}
+              />
+                {/* Employer Status */}
+              <Route
+                exact
+                path="/admin/employer/confirmation"
+                component={EmployerConfirmationPage}
+              />
+              <Route
+                exact
+                path="/admin/employer/accept"
+                component={EmployerAcceptPage}
+              />
+              <Route
+                exact
+                path="/admin/employer/reject"
+                component={EmployerRejectPage}
+              />
+             {/* Employe Update Status */}
+              <Route
+                exact
+                path="/admin/employer/updateconfirmation"
+                component={EmployerUpdateConfirmationPage}
+              />
+              <Route
+                exact
+                path="/admin/employer/updateaccept"
+                component={EmployerUpdateAcceptPage}
+              />
+              <Route
+                exact
+                path="/admin/employer/updatereject"
+                component={EmployerUpdateRejectPage}
+              />
+            </Switch>
           </div>
         </div>
       </div>

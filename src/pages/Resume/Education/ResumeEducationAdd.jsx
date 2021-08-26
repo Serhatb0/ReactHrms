@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useFormik } from "formik";
 import { Button, Form, Label, Modal } from "semantic-ui-react";
-import { validationSchema } from "./ResumeEducationValidation";
-import { addEducationAsync } from "../../../../redux/educations/services";
+import { validationSchema } from "./Validation/ResumeEducationValidation";
+import { addEducationAsync } from "../../../redux/educations/services";
 import { useDispatch } from "react-redux";
 
 let initialValues = {

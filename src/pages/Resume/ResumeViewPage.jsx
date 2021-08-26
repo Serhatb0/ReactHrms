@@ -3,8 +3,8 @@
 import React from "react";
 import "./Css/ResumeViewPage.css";
 
-import ResumeEducationPage from "./ResumeEducationPage";
-import ResumeLanguagePage from "./ResumeLanguagePage";
+import ResumeEducationPage from "./Education/ResumeEducationPage";
+import ResumeLanguagePage from "./Lang/ResumeLanguagePage";
 export default function ResumeViewPage() {
   return (
     <div>
